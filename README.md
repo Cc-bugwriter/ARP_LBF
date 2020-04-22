@@ -1,5 +1,5 @@
 # ARP_LBF
-Code fuer ARP
+Code für ARP
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 ## Table of Contents
@@ -35,9 +35,16 @@ Studierende, Lehrkräfte und Beschäftigte können unter Verwendung ihrer Univer
 Tipp: Um Simulation und Maschinen-Learning Toolbox erfolgreich durchzulaufen, soll die Version von MATLAB mindest `2019b` oder `höher` sein. 
 
 ### Python
-KNN Network wird auf Python Umgebung implementiert, deswegen eine IDE zu installisieren sehr hilfreich ist. Anbei zeigt ein List, deren Applicationen herunterladen und installisieren noetig sind.
+KNN Network wird auf Python Umgebung implementiert, deswegen eine IDE zu installisieren sehr hilfreich ist. Anbei zeigt ein List, deren Applicationen herunterladen und installisieren nötig sind.
 - [Python 3.7.7](https://www.python.org/downloads/release/python-377/)
 - [Anaconda](https://www.anaconda.com/distribution/)
 - [Pycharm](https://www.jetbrains.com/pycharm/download/#section=windows)
+
+### Smartgit
+GitHub ist sehr unfreundlich fuer Anfanger, da meiseten pull oder push commands im Console eingegeben werden müssen. Aus diesem Grund können Sie schnell mit eine GUI-Application 'SmartGit' anfangen.
+
+[SmartGit](https://www.syntevo.com/smartgit/download/)
+
+Tipps: Die Anwendung von GitHub erfödert eine GitHub-Konto. Sie können es [hier](https://github.com/join?return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D78a2ba87f071c28e65bb%26redirect_uri%3Dhttps%253A%252F%252Fcircleci.com%252Fauth%252Fgithub%253Freturn-to%253D%25252F%26scope%3Drepo%252Cuser%253Aemail%26state%3DBf3UJZ_V-LRShzGzzfZ47Cq7Xf1Mnn9ey93OiEvoqB086Iauza-UdWV1n-IITNlHdBsPgv8nlO6x6x8L&source=oauth) mit ihre personlichen Email herstellen.
 
 ## Usage
