@@ -24,3 +24,11 @@ Die Studierenden werden vom Fachgebiet Systemzuverlässigkeit, Adaptronik und Ma
 ## Install
 
 This module depends upon a knowledge `Matlab` and `python` 
+### Matlab
+um Nutzungseinschränkungen aufgrund der derzeitigen Lage in Bezug auf das Coronavirus zu vermeiden, bietet der Hersteller MathWorks der TU Darmstadt ab sofort bis zum 30.09.2020 eine campusweite Lizenz für MATLAB, Simulink und alle begleitenden Toolboxen sowie einer Reihe von E-Learning-Materialien an.
+
+Studierende, Lehrkräfte und Beschäftigte können unter Verwendung ihrer Universitätsemailadresse einen MathWorks-Account erstellen und individuellen Zugang zu den Installationsmedien über das folgende Portal erhalten:
+
+[MATLAB Lizenz](https://www.mathworks.com/academia/tah-portal/tu-darmstadt-31483887.html)
+
+Tipp: Um Simulation und Maschinen-Learning Toolbox erfolgreich durchzulaufen, soll die Version von MATLAB mindest `2019b oder höher` sein. 
