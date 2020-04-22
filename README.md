@@ -23,7 +23,7 @@ Die Studierenden werden vom Fachgebiet Systemzuverlässigkeit, Adaptronik und Ma
 
 ## Install
 
-This module depends upon a knowledge `Matlab` and `python` 
+This module depends upon a knowledge `Git`, `Matlab` and `python` 
 
 ### Matlab
 Um Nutzungseinschränkungen aufgrund der derzeitigen Lage in Bezug auf das Coronavirus zu vermeiden, bietet der Hersteller MathWorks der TU Darmstadt ab sofort bis zum 30.09.2020 eine campusweite Lizenz für MATLAB, Simulink und alle begleitenden Toolboxen sowie einer Reihe von E-Learning-Materialien an.
@@ -46,5 +46,7 @@ GitHub ist sehr unfreundlich fuer Anfanger, da meiseten pull oder push commands 
 [SmartGit](https://www.syntevo.com/smartgit/download/)
 
 Tipps: Die Anwendung von GitHub erfödert eine GitHub-Konto. Sie können es [hier](https://github.com/join?return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D78a2ba87f071c28e65bb%26redirect_uri%3Dhttps%253A%252F%252Fcircleci.com%252Fauth%252Fgithub%253Freturn-to%253D%25252F%26scope%3Drepo%252Cuser%253Aemail%26state%3DBf3UJZ_V-LRShzGzzfZ47Cq7Xf1Mnn9ey93OiEvoqB086Iauza-UdWV1n-IITNlHdBsPgv8nlO6x6x8L&source=oauth) mit ihre personlichen Email herstellen.
+
+Eine offizielle Tutorial können Sie mit diesem [Link](https://guides.github.com/activities/hello-world/) finden.
 
 ## Usage
