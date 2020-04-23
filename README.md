@@ -49,4 +49,9 @@ Tipps: Die Anwendung von GitHub erfödert eine GitHub-Konto. Sie können es [hie
 
 Eine offizielle Tutorial können Sie mit diesem [Link](https://guides.github.com/activities/hello-world/) finden.
 
+### Gantt Diagramm
+Um den Projekt-prozess besser zu kontrollieren und zu Überwächen, ist das Gantt Diagramm im Excel angewendet.
+Normale Änderung wie Projekt-name, Prozess und gewünschtes Datum kann einfach in Excel manuell durchgelauft werden. Die Diagramm-Visualisierung muss mit Plugin updaten.
+[Gantt Diagramm](https://1drv.ms/x/s!AoFQHZ8wru691GZRtCRijcDHQ6Jp?e=7xtmd6)
+
 ## Usage
