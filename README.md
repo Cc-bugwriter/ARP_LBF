@@ -53,7 +53,7 @@ Eine offizielle Tutorial können Sie mit diesem [Link](https://guides.github.com
 Um den Projekt-prozess besser zu kontrollieren und zu Überwächen, ist das Gantt Diagramm im Excel angewendet.
 Normale Änderung wie Projekt-name, Prozess und gewünschtes Datum kann einfach in Excel manuell durchgelauft werden. Die Diagramm-Visualisierung muss mit Plugin updaten.
 
--[Gantt Plugin](https://appsource.microsoft.com/zh-cn/product/office/WA200001095?src=office&corrid=d429bcc5-7269-42ca-bfe0-1d82b9d8f5bc&omexanonuid=fe50c9e6-ab1c-4c1e-a758-8fe11ebd0286&referralurl=)
--[Gantt Diagramm](https://1drv.ms/x/s!AoFQHZ8wru691GZRtCRijcDHQ6Jp?e=7xtmd6)
+- [Gantt Plugin](https://appsource.microsoft.com/zh-cn/product/office/WA200001095?src=office&corrid=d429bcc5-7269-42ca-bfe0-1d82b9d8f5bc&omexanonuid=fe50c9e6-ab1c-4c1e-a758-8fe11ebd0286&referralurl=)
+- [Gantt Diagramm](https://1drv.ms/x/s!AoFQHZ8wru691GZRtCRijcDHQ6Jp?e=7xtmd6)
 
 ## Usage
