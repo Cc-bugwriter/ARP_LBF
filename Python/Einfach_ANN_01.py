@@ -26,14 +26,17 @@ X = preprocessing.scale(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=42)
 
 # Setup a ANN Regressor 2 layers
-knn = MLPRegressor(solver='lbfgs', alpha=1e-4,
-                    hidden_layer_sizes=(105,70,46), random_state=1)
+knn = MLPRegressor(solver='lbfgs', alpha=8e-3,
+                    hidden_layer_sizes=(105,70,46), random_state=1, max_iter=500)
 # Fit the Regressor to the training data
 knn.fit(X_train, y_train)
 # Print R2 Metrics
 print(knn.score(X_test, y_test))
 
-estimator = MLPRegressor(solver='lbfgs', alpha=1e-4,
+Gewichtsmatrix = knn.fit(X, y).coefs_
+
+# Evaluation R2, Fit-time
+estimator = MLPRegressor(solver='lbfgs', alpha=8e-3,
                     hidden_layer_sizes=(105, 70, 46), random_state=1)
 # Set the Title of Learning curve
 title = "Learning Curves (105, 70, 46)"
@@ -41,5 +44,35 @@ title = "Learning Curves (105, 70, 46)"
 cv = ShuffleSplit(test_size=0.2)
 # Set train_sizes
 train_sizes=np.linspace(0.01, 1.0, 25)
-plc.plot_learning_curve(estimator, title, X, y, cv= cv, ylim=(0.,1.01), train_sizes=train_sizes)
+plc.plot_learning_curve(estimator, title, X, y, cv= cv, ylim=(0.,1.01), n_jobs=6, train_sizes=train_sizes)
+plt.show()
+
+# Compute train and test errors
+alphas = np.logspace(-5, -2, 30)
+train_errors = list()
+test_errors = list()
+for alpha in alphas:
+    knn.set_params(alpha=alpha)
+    knn.fit(X_train, y_train)
+    train_errors.append(knn.score(X_train, y_train))
+    test_errors.append(knn.score(X_test, y_test))
+
+i_alpha_optim = np.argmax(test_errors)
+alpha_optim = alphas[i_alpha_optim]
+print("Optimal regularization parameter : %s" % alpha_optim)
+
+# Estimate the coef_ on full data with optimal regularization parameter
+knn.set_params(alpha=alpha_optim)
+knn_loss = knn.fit(X, y).loss_
+print(knn_loss)
+
+plt.semilogx(alphas, train_errors, label='Train')
+plt.semilogx(alphas, test_errors, label='Test')
+plt.vlines(alpha_optim, plt.ylim()[0], np.max(test_errors), color='k',
+           linewidth=3, label='Optimum on test')
+plt.legend(loc='lower left')
+plt.ylim([0.95, 1.01])
+plt.xlabel('Regularization parameter')
+plt.ylabel('Performance')
+plt.legend()
 plt.show()

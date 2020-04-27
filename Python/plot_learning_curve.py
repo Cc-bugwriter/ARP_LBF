@@ -63,18 +63,31 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
         (default: np.linspace(0.1, 1.0, 5))
     """
     if axes is None:
-        _, axes = plt.subplots(3, 1, figsize=(20, 5))
+        _, axes = plt.subplots(3, 1, figsize=(20, 5))  # Initialize subplot
 
     axes[0].set_title(title)
     if ylim is not None:
-        axes[0].set_ylim(*ylim)
+        axes[0].set_ylim(*ylim) # set default ylim (automatic matching)
     axes[0].set_xlabel("Training examples")
     axes[0].set_ylabel("Score")
 
+    # evaluate the model quality
+    # train_sizes: Numbers of training examples that has been used to generate the learning curve.
+    # train_scores：Scores on training sets, R2
+    # test_scores: Scores on test set, R2
+    # fit_times: Times spent for fitting (in seconds)
     train_sizes, train_scores, test_scores, fit_times, _ = \
         learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
                        train_sizes=train_sizes,
                        return_times=True)
+    # estimator: Model object, e.g. ANN, SVM, etc
+    # X: Training vector
+    # y: Target relative to X
+    # cv: cross-validation splitting strategy.
+    # train_sizes: Relative numbers of training examples that will be used to generate the learning curve
+    # n_jobs: Number of processors to run in parallel. None means 1 processors
+    # return_times: Whether to return the fit and score times.
+
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
     test_scores_mean = np.mean(test_scores, axis=1)
