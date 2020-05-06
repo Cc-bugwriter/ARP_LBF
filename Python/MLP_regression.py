@@ -1,11 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import math
+from time import time
 from Evaluation import plot_learning_curve as plc
-from sklearn.model_selection import train_test_split, ShuffleSplit
+from Evaluation import report_search as report
+from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV
 from sklearn.neural_network import MLPRegressor
 from sklearn import preprocessing
 from warnings import simplefilter
+
 
 def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     """
@@ -52,7 +56,7 @@ def dataset_preprocess(input_set, target_set=None):
     regularise Input data set
 
     :param input_set: [narray],  Input data set
-
+    :param target_set: [narray],  Target data set (default value: None)
     :return input_set: [narray],  Input data set after regularization
     :return input_std: [narray],  regularization standard deviation
     :return input_mean: [narray],  regularization mean
@@ -188,7 +192,7 @@ def plot_regularization(estimator, input_set, target_set):
     plt.show()
 
 
-def grid_search(estimator, input_set, target_set, deep, width, iteration):
+def grid_search(estimator, input_set, target_set, deep=3):
     """
     evaluate determination coefficient of variable regularisation coefficient,
     find the best result and visualize evaluation process
@@ -196,14 +200,48 @@ def grid_search(estimator, input_set, target_set, deep, width, iteration):
     :param estimator: [estimator],  MLP Perceptron model
     :param input_set: [narray],  Input data set
     :param target_set: [narray],  Target data set
-    :param deep: [int],  the number of layer width
-    :param width: [int],  the maximal number of neurons in every layer
-    :param iteration: [int],  the maximal number of neurons in every layer
+    :param deep: [int],  the number of layer width (default value: 3)
     """
-    for layer in range(1, deep):
-        for neuron in range(target_set.shape[1], width):
-            for epoch in range(iteration):
-                hidden_layer_sizes = (105, 70, 46)
+    # find the lease common multiple, which base on the number of input's and target's feature
+    width = input_set.shape[1]*target_set.shape[1]/math.gcd(input_set.shape[1], target_set.shape[1])
+    width = int(width)
+
+    # assign possible neuron number in domain
+    candidate_neuron = range(target_set.shape[1], width)
+
+    # initialize the hidden_layer_sizes
+    hidden_layer_sizes = []
+
+    # assign possible hidden_layer_sizes
+    if deep == 3:
+        for layer_3 in candidate_neuron:
+            for layer_2 in candidate_neuron:
+                for layer_1 in candidate_neuron:
+                    if layer_3 < layer_2 and layer_2 < layer_1:
+                        hidden_layer_sizes.append((layer_1, layer_2, layer_3))
+    elif deep == 2:
+        for layer_2 in candidate_neuron:
+            for layer_1 in candidate_neuron:
+                if layer_2 < layer_1:
+                    hidden_layer_sizes.append((layer_1, layer_2))
+    elif deep == 1:
+        for layer_1 in candidate_neuron:
+            hidden_layer_sizes.append((layer_1))
+
+    # assign full grid over all hyper parameters
+    param_grid = {
+        'hidden_layer_sizes': hidden_layer_sizes,
+        'activation': ['relu'],
+        'solver': ['lbfgs'],
+        'alpha': np.logspace(-5, -2, 30)}
+
+    # run grid search
+    grid_search = GridSearchCV(estimator, param_grid=param_grid)
+    start = time()
+    grid_search.fit(input_set, target_set)
+
+    # reprot result of grid search
+    report(grid_search.cv_results_)
 
 
 if __name__ == '__main__':
@@ -211,8 +249,15 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    input_set, target_set = dataset_reader(name='2PmitT')
+    input_set, target_set = dataset_reader(name='1PmitT')
+    for i in range(2, 8):
+        name = f"{i}PmitT"
+        input_append, target_append = dataset_reader(name=name)
+        input_set = np.concatenate((input_set, input_append), axis=0)
+        target_set = np.concatenate((target_set, target_append), axis=0)
+
     input_set, _, _ = dataset_preprocess(input_set)  # preprocess for regression
+
     # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)  # preprocess for classification
 
     # model MLP Regressor
@@ -221,3 +266,6 @@ if __name__ == '__main__':
     # evaluation
     evaluation_learning_curve(MLP_regression, input_set, target_set)  # learning curve
     plot_regularization(MLP_regression, input_set, target_set)  # regularization coefficient
+
+    # grid search
+    grid_search(MLP_regression, input_set, target_set)
