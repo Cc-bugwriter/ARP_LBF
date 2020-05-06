@@ -27,17 +27,19 @@ def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     # load the csv data with pandas
     df = pd.read_csv(data)
 
+    # assign Input label
+    label_x = ['omega_1', 'omega_2', 'omega_3', 'D_1', 'D_2', 'D_3', 'EVnorm1_1', 'EVnorm1_2', 'EVnorm1_3',
+               'EVnorm2_1', 'EVnorm2_2', 'EVnorm2_3', 'EVnorm3_1', 'EVnorm3_2', 'EVnorm3_3']
+
     # switch Target label based on data version
     if name in datasets_v1:
         label_y = ['m2', 'm3', 'm4', 'k5', 'k6', 'alpha', 'beta']
     elif name in datasets_v2:
         label_y = ['m2', 'm3', 'm4', 'k5plusk6', 'alpha', 'beta']
     elif name in datasets_v3:
-        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta', 'Tem']
+        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
+        label_x.append('Tem')
 
-    # assign
-    label_x = ['omega_1', 'omega_2', 'omega_3', 'D_1', 'D_2', 'D_3', 'EVnorm1_1', 'EVnorm1_2', 'EVnorm1_3',
-               'EVnorm2_1', 'EVnorm2_2', 'EVnorm2_3', 'EVnorm3_1', 'EVnorm3_2', 'EVnorm3_3']
 
     input_set = df[label_x].values
     target_set = df[label_y].values
