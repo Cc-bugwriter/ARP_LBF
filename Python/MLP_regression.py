@@ -61,10 +61,10 @@ def dataset_preprocess(input_set, target_set=None):
     :return input_std: [narray],  regularization standard deviation
     :return input_mean: [narray],  regularization mean
     """
-    # Regularization Input
+    # regularization Input
     input_set = preprocessing.scale(input_set)
 
-    # Compute feature scaling parameter
+    # compute feature scaling parameter
     input_std = np.std(input_set, ddof=0)  # standard deviation with bias (column)
     input_mean = input_set.mean(0)  # mean (column)
 
@@ -94,22 +94,22 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=8e-3,
     :return weight_matrix: [narray], weight matrix of training data set
     """
 
-    # Split into training and test set
+    # split into training and test set
     X_train, X_test, y_train, y_test = \
         train_test_split(input_set, target_set, test_size=test_size, random_state=random_seed)
 
-    # Setup a MLP Regressor 3 layers
+    # setup a MLP Regressor 3 layers
     regressor = MLPRegressor(solver='lbfgs', alpha=alpha,
                        hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
 
-    # Fit Regressor to the training data
+    # fit Regressor to the training data
     regressor.fit(X_train, y_train)
 
-    # Compute and Print R2 Metrics
+    # compute and Print R2 Metrics
     score = regressor.score(X_test, y_test)
     print('Test R2 Score: %f' % score)
 
-    # Compute aWeight matrix
+    # compute aWeight matrix
     weight_matrix = regressor.fit(X_train, y_train).coefs_
 
     return regressor, score, weight_matrix
