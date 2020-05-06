@@ -47,7 +47,7 @@ def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     return input_set, target_set
 
 
-def dataset_preprocess(input_set):
+def dataset_preprocess(input_set, target_set=None):
     """
     regularise Input data set
 
@@ -63,6 +63,11 @@ def dataset_preprocess(input_set):
     # Compute feature scaling parameter
     input_std = np.std(input_set, ddof=0)  # standard deviation with bias (column)
     input_mean = input_set.mean(0)  # mean (column)
+
+    # assign binary mask to Target classification
+    if target_set is not None:
+        target_set = target_set != 1
+        return input_set, input_std, input_mean, target_set
 
     return input_set, input_std, input_mean
 
@@ -98,7 +103,7 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=8e-3,
 
     # Compute and Print R2 Metrics
     score = regressor.score(X_test, y_test)
-    print(score)
+    print('Test R2 Score: %f' % score)
 
     # Compute aWeight matrix
     weight_matrix = regressor.fit(X_train, y_train).coefs_
@@ -182,13 +187,33 @@ def plot_regularization(estimator, input_set, target_set):
     plt.legend()
     plt.show()
 
+
+def grid_search(estimator, input_set, target_set, deep, width, iteration):
+    """
+    evaluate determination coefficient of variable regularisation coefficient,
+    find the best result and visualize evaluation process
+
+    :param estimator: [estimator],  MLP Perceptron model
+    :param input_set: [narray],  Input data set
+    :param target_set: [narray],  Target data set
+    :param deep: [int],  the number of layer width
+    :param width: [int],  the maximal number of neurons in every layer
+    :param iteration: [int],  the maximal number of neurons in every layer
+    """
+    for layer in range(1, deep):
+        for neuron in range(target_set.shape[1], width):
+            for epoch in range(iteration):
+                hidden_layer_sizes = (105, 70, 46)
+
+
 if __name__ == '__main__':
     # ignore all future warnings
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
     input_set, target_set = dataset_reader(name='2PmitT')
-    input_set, _, _ = dataset_preprocess(input_set)
+    input_set, _, _ = dataset_preprocess(input_set)  # preprocess for regression
+    # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)  # preprocess for classification
 
     # model MLP Regressor
     MLP_regression, _, _ = regression(input_set, target_set)
