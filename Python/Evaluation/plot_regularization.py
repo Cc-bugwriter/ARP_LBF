@@ -50,3 +50,5 @@ def plot_regularization(estimator, input_set, target_set, alphas=np.logspace(-5,
     plt.xlabel('Regularization parameter')
     plt.ylabel('Performance')
     plt.legend()
+
+    return plt
