@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import learning_curve
+from sklearn.model_selection import ShuffleSplit
 
 
 def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
@@ -130,3 +131,28 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
     return plt
 
 
+def evaluation_learning_curve(estimator, input_set, target_set,
+                              title="(46, 29, 26)", test_size=0.2, train_sizes=np.linspace(0.01, 1.0, 25)):
+    """
+    evaluate estimator fitting quality and performance, which implements on random cross validation.
+    the data size of cross validation will linear increase, so that could research the overfitting and underfitting problem
+    every cross validation is isolated, each data set dosen't have any influence of any other data sets.
+    after each cross validation cache the score and time cost, finally will be visualized.
+
+    :param estimator: [estimator],  MLP Perceptron model
+    :param input_set: [narray],  Input data set
+    :param target_set: [narray],  Target data set
+    :param title: [str], string of structural hyperparameter in MLP Perceptron (default value : "(105, 70, 46)")
+    :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
+    :param train_sizes: [nrarray], the proportion of cross validation data in all data set (default value : np.linspace(0.01, 1.0, 25))
+    """
+    # set the Title of Learning curve
+    title = "Learning Curves" + title
+
+    # randomly select cross validation set.
+    cv = ShuffleSplit(test_size=test_size)
+
+    # recall function
+    plot_learning_curve(estimator, title, input_set, target_set,
+                            cv=cv, ylim=(0., 1.01), n_jobs=6, train_sizes=train_sizes)
+    plt.show()
