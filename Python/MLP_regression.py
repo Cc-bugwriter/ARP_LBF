@@ -2,20 +2,53 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import math
-from time import time
 from Evaluation import plot_learning_curve as plc
-from Evaluation import report_search as report
-from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV
+from Evaluation import hyper_search as search
+from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV, RandomizedSearchCV
 from sklearn.neural_network import MLPRegressor
 from sklearn import preprocessing
 from warnings import simplefilter
+
+
+class Classification():
+    """
+    define all classification with enumeration
+    """
+    m2 = 1
+    m3 = 10
+    m4 = 100
+    k = 1000
+    a = 10000
+    b = 100000
+    belong_to = \
+        {0: 'none',
+          m2: 'm2', m3: 'm3', m4: 'm4', k: 'k', a: 'alpha', b: 'beta',
+          m2 + m3: 'm23', m2 + m4: 'm24', m2 + k: 'm2k', m2 + a: 'm2a', m2 + b: 'm2b',
+          m3 + m4: 'm34', m3 + k: 'm3k', m3 + a: 'm3a', m3 + b: 'm3b',
+          m4 + k: 'm4k', m4 + a: 'm4a', m4 + b: 'm4b',
+          k + a: 'ka', k + b: 'kb',
+          a + b: 'ab',
+          m2 + m3 + m4: 'm234', m2 + m3 + k: 'm23k', m2 + m3 + a: 'm23a', m2 + m3 + b: 'm23b', m2 + m4 + k: 'm24k',
+          m2 + m4 + a: 'm24a', m2 + m4 + b: 'm24b', m2 + k + a: 'm2ka', m2 + k + b: 'm2kb', m2 + a + b: 'm2ab',
+          m3 + m4 + k: 'm34k', m3 + m4 + a: 'm34a', m3 + m4 + b: 'm34b', m3 + k + a: 'm3ka', m3 + k + b: 'm3kb',
+          m3 + a + b: 'm3ab',
+          m4 + k + a: 'm4ka', m4 + k + b: 'm4kb', m4 + a + b: 'm4ab',
+          k + a + b: 'kab',
+          m2 + m3 + m4 + k: 'm234k', m2 + m3 + m4 + a: 'm234a', m2 + m3 + m4 + b: 'm234b', m2 + m3 + k + a: 'm23ka',
+          m2 + m3 + k + b: 'm23kb', m2 + m3 + a + b: 'm23ab', m2 + m4 + k + a: 'm24ka', m2 + m4 + k + b: 'm24kb',
+          m2 + m4 + a + b: 'm24ab', m2 + k + a + b: 'm2kab',
+          m3 + m4 + k + a: 'm34ka', m3 + m4 + k + b: 'm34kb', m3 + m4 + a + b: 'm34ab', m3 + k + a + b: 'm3kab',
+          m4 + k + a + b: 'm4kab',
+          m2 + m3 + m4 + k + a: 'm234ka', m2 + m3 + m4 + k + b: 'm234kb', m2 + m3 + m4 + a + b: 'm234ab',
+          m2 + m3 + k + a + b: 'm23kab', m2 + m4 + k + a + b: 'm24kab', m3 + m4 + k + a + b: 'm34kab',
+          m2 + m3 + m4 + k + a + b: 'm234kab'}
 
 
 def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     """
     read the data set
     and return Input and Target of Training Network
-    :param path: [str], the path of csv data (default value : 'Data/rt-daten')
+    :param path: [str], the path of csv data (default value : 'Data/daten')
     :param name: [str], data to import ('1P' ,'1P1K' or '1PmitT', e.g.) (default value : '1P1K')
     :param type: [str], data type (default value : 'csv')
     :return input_set: [narray],  Input data set
@@ -44,7 +77,6 @@ def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
         label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
         label_x.append('Tem')
 
-
     input_set = df[label_x].values
     target_set = df[label_y].values
 
@@ -70,13 +102,34 @@ def dataset_preprocess(input_set, target_set=None):
 
     # assign binary mask to Target classification
     if target_set is not None:
-        target_set = target_set != 1
+        # assign reference value
+        target_set_ref = [1, 1, 1, 2, 0.6261, 0.0001]
+        # decide change of target parameter
+        for i, reference in enumerate(target_set_ref):
+            target_set[:, i] = target_set[:, i] != reference
+        # convert boolen to int
+        target_set = target_set.astype(int)
+
+        # convert [5*1] array in [1*1] float
+        for i in range(target_set.shape[1]):
+            target_set[:, i] = target_set[:, i] * 10 ** i
+        target_set = np.sum(target_set, axis=1, dtype=int)
+
+        # convert [1*1] float to str
+        target_set_list = target_set.tolist()
+        target_name = []
+        for i in target_set_list:
+            target_name.append(Classification.belong_to[i])
+        target_name = np.array(target_name)
+
+        return input_set, input_std, input_mean, target_set, target_name
+
         return input_set, input_std, input_mean, target_set
 
     return input_set, input_std, input_mean
 
 
-def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=8e-3, hidden_layer_sizes=(105, 70, 46), max_iter=500):
+def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.3738e-4, hidden_layer_sizes=(46, 29, 26), max_iter=1000):
     """
     modeling a MLP Regressor with random split all data set.
     after training print out test score on console.
@@ -86,8 +139,8 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=8e-3,
     :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
     :param random_seed: [int], the random seed of random split for data set (default value : 233)
     :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 8e-3)
-    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (105, 70, 46))
-    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : (105, 70, 46))
+    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (46, 29, 26))
+    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 1000)
 
     :return regressor: [estimator],  MLP Regressor with
     :return score: [float], determination coefficient of test data set
@@ -109,14 +162,14 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=8e-3,
     score = regressor.score(X_test, y_test)
     print('Test R2 Score: %f' % score)
 
-    # compute aWeight matrix
+    # compute Weight matrix
     weight_matrix = regressor.fit(X_train, y_train).coefs_
 
     return regressor, score, weight_matrix
 
 
 def evaluation_learning_curve(estimator, input_set, target_set,
-                              title="(105, 70, 46)", test_size=0.2, train_sizes=np.linspace(0.01, 1.0, 25)):
+                              title="(46, 29, 26)", test_size=0.2, train_sizes=np.linspace(0.01, 1.0, 25)):
     """
     evaluate estimator fitting quality and performance, which implements on random cross validation.
     the data size of cross validation will linear increase, so that could research the overfitting and underfitting problem
@@ -142,7 +195,7 @@ def evaluation_learning_curve(estimator, input_set, target_set,
     plt.show()
 
 
-def plot_regularization(estimator, input_set, target_set):
+def plot_regularization(estimator, input_set, target_set, alphas=np.logspace(-5, -2, 30)):
     """
     evaluate determination coefficient of variable regularisation coefficient,
     find the best result and visualize evaluation process
@@ -150,6 +203,7 @@ def plot_regularization(estimator, input_set, target_set):
     :param estimator: [estimator],  MLP Perceptron model
     :param input_set: [narray],  Input data set
     :param target_set: [narray],  Target data set
+    :param alphas: [narray],  regularisation coefficient domain
     """
     # initialize figure
     plt.subplots(1, 1, figsize=(20, 20))
@@ -158,9 +212,8 @@ def plot_regularization(estimator, input_set, target_set):
     X_train, X_test, y_train, y_test = \
         train_test_split(input_set, target_set, test_size=0.2, random_state=233)
 
-    # assign regularisation coefficient domain
-    alphas = np.logspace(-5, -2, 30)
-    train_scores = list()  # initialize list
+    # initialize list
+    train_scores = list()
     test_scores = list()
 
     # traversal predefined regularisation coefficient domain
@@ -192,7 +245,7 @@ def plot_regularization(estimator, input_set, target_set):
     plt.show()
 
 
-def grid_search(estimator, input_set, target_set, deep=3):
+def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     """
     evaluate determination coefficient of variable regularisation coefficient,
     find the best result and visualize evaluation process
@@ -201,6 +254,7 @@ def grid_search(estimator, input_set, target_set, deep=3):
     :param input_set: [narray],  Input data set
     :param target_set: [narray],  Target data set
     :param deep: [int],  the number of layer width (default value: 3)
+    :param random_mode: [boolen],  choose to random search
     """
     # find the lease common multiple, which base on the number of input's and target's feature
     width = input_set.shape[1]*target_set.shape[1]/math.gcd(input_set.shape[1], target_set.shape[1])
@@ -229,26 +283,33 @@ def grid_search(estimator, input_set, target_set, deep=3):
             hidden_layer_sizes.append((layer_1))
 
     # assign full grid over all hyper parameters
-    param_grid = {
+    param_space = {
         'hidden_layer_sizes': hidden_layer_sizes,
         'activation': ['relu'],
         'solver': ['lbfgs'],
         'alpha': np.logspace(-5, -2, 30)}
 
-    # run grid search
-    grid_search = GridSearchCV(estimator, param_grid=param_grid)
-    start = time()
-    grid_search.fit(input_set, target_set)
+    # run hyper parameter search
+    if random_mode:
+        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space)
+    else:
+        hyper_search = GridSearchCV(estimator, param_grid=param_space)
+
+    hyper_search.fit(input_set, target_set)
 
     # reprot result of grid search
-    report(grid_search.cv_results_)
+    search_result = hyper_search.cv_results_
+    search.report_search(search_result)
+
+    return search_result
 
 
-if __name__ == '__main__':
-    # ignore all future warnings
-    simplefilter(action='ignore', category=FutureWarning)
-
-    # load data and preprocess
+def merge_data():
+    """
+    merge all data in a couple of data sets
+    :return input_set: [narray],  Input data set
+    :return target_set: [narray], Target data set
+    """
     input_set, target_set = dataset_reader(name='1PmitT')
     for i in range(2, 8):
         name = f"{i}PmitT"
@@ -256,9 +317,18 @@ if __name__ == '__main__':
         input_set = np.concatenate((input_set, input_append), axis=0)
         target_set = np.concatenate((target_set, target_append), axis=0)
 
-    input_set, _, _ = dataset_preprocess(input_set)  # preprocess for regression
+    return input_set, target_set
 
-    # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)  # preprocess for classification
+
+if __name__ == '__main__':
+    # ignore all future warnings
+    simplefilter(action='ignore', category=FutureWarning)
+
+    # load data and preprocess
+    input_set, target_set = merge_data()
+
+    # preprocess for regression
+    input_set, _, _ = dataset_preprocess(input_set)
 
     # model MLP Regressor
     MLP_regression, _, _ = regression(input_set, target_set)
@@ -268,4 +338,4 @@ if __name__ == '__main__':
     plot_regularization(MLP_regression, input_set, target_set)  # regularization coefficient
 
     # grid search
-    grid_search(MLP_regression, input_set, target_set)
+    hyper_search(MLP_regression, input_set, target_set)
