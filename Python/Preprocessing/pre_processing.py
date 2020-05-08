@@ -124,19 +124,16 @@ def dataset_preprocess(input_set, target_set=None):
             target_set[:, i] = target_set[:, i] != reference
         # convert boolen to int
         target_set = target_set.astype(int)
-        #
-        # # convert [5*1] array in [1*1] float
-        # for i in range(target_set.shape[1]):
-        #     target_set[:, i] = target_set[:, i] * 10**i
-        # target_set = np.sum(target_set, axis=1, dtype=int)
-        #
-        # # convert [1*1] float to str
-        # target_set_list = target_set.tolist()
-        # target_name = []
-        # for i in target_set_list:
-        #     target_name.append(Classification.belong_to[i])
-        # target_name = np.array(target_name)
+
+        # convert [5*1] array to str
+        for i in range(target_set.shape[1]):
+            target_set[:, i] = target_set[:, i] * 10**i
+        target_set_list = np.sum(target_set, axis=1, dtype=int).tolist()
+
         target_name = []
+        for i in target_set_list:
+            target_name.append(Classification.belong_to[i])
+        target_name = np.array(target_name)
 
         return input_set, input_std, input_mean, target_set, target_name
 

@@ -35,6 +35,22 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     hidden_layer_sizes = []
 
     # assign possible hidden_layer_sizes
+    if deep == 5:
+        for layer_5 in candidate_neuron:
+            for layer_4 in candidate_neuron:
+                for layer_3 in candidate_neuron:
+                    for layer_2 in candidate_neuron:
+                        for layer_1 in candidate_neuron:
+                            if layer_5 < layer_4 and layer_4 < layer_3 and \
+                                    layer_3 < layer_2 and layer_2 < layer_1:
+                                hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4, layer_5))
+    if deep == 4:
+        for layer_4 in candidate_neuron:
+            for layer_3 in candidate_neuron:
+                for layer_2 in candidate_neuron:
+                    for layer_1 in candidate_neuron:
+                        if layer_4 < layer_3 and layer_3 < layer_2 and layer_2 < layer_1:
+                            hidden_layer_sizes.append((layer_1, layer_2, layer_3,layer_4))
     if deep == 3:
         for layer_3 in candidate_neuron:
             for layer_2 in candidate_neuron:
@@ -53,7 +69,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     # assign full grid over all hyper parameters
     param_space = {
         'hidden_layer_sizes': hidden_layer_sizes,
-        'activation': ['relu'],
+        'activation': ['relu', 'logistic'],
         'solver': ['lbfgs'],
         'alpha': np.logspace(-5, -2, 30),
         'max_iter': np.logspace(3, 4, 10)}
@@ -72,7 +88,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
 
     candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
 
-    return candidates
+    return search_result[['params']][candidates]
 
 
 def report_search(results, n_top=3):

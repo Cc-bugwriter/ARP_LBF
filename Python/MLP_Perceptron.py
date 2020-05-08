@@ -11,7 +11,7 @@ from sklearn.neural_network import MLPRegressor, MLPClassifier
 from warnings import simplefilter
 
 
-def main(model):
+def main(model, hyperparameter=None):
     """
     main function of NN
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
@@ -27,9 +27,9 @@ def main(model):
 
     # training MLP preceptron
     if model == "Regressor":
-        regressor, score, weight_matrix = Regressor.regression(input_set, target_set)
+        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter)
     elif model == "Classifier":
-        classifier, score, weight_matrix = Classifier.classifier(input_set, target_set)
+        classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter)
 
     # evaluate MLP preceptron
     if model == "Regressor":
@@ -38,10 +38,11 @@ def main(model):
         confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
 
 
-def optimize(model):
+def optimize(model, deep_space=np.linspace(3, 3, num=1)):
     """
     optimize function of NN
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
+    :param deep_space: [narray],  network layer space (default value: np.linspace(3, 3, num=1))
     """
     # load data set
     input_set, target_set = pre_processing.merge_data()
@@ -76,4 +77,4 @@ if __name__ == '__main__':
     parameter_space = optimize("Classifier")
 
     # # train network
-    # main("Classifier")
+    # main("Classifier", parameter_space)
