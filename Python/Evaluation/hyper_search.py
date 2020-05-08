@@ -36,6 +36,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
 
     # assign possible hidden_layer_sizes
     if deep == 5:
+<<<<<<< HEAD
         for layer_5 in candidate_neuron:
             for layer_4 in candidate_neuron:
                 for layer_3 in candidate_neuron:
@@ -44,6 +45,15 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
                             if layer_5 < layer_4 and layer_4 < layer_3 and \
                                     layer_3 < layer_2 and layer_2 < layer_1:
                                 hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4, layer_5))
+=======
+        if model == 'classification':
+            zf = zipfile.ZipFile('Data/hidden_layer_sizes_5_clf.zip')
+            df = pd.read_csv(zf.open('hidden_layer_sizes_5_clf.csv'))
+            hidden_layer_sizes = [list(row) for row in df.values]
+        elif model == 'classification':
+            df = pd.read_csv('Data/hidden_layer_sizes_5_mlg.csv')
+            hidden_layer_sizes = [list(row) for row in df.values]
+>>>>>>> 1eb5a76... version 1.01.3
     if deep == 4:
         for layer_4 in candidate_neuron:
             for layer_3 in candidate_neuron:
