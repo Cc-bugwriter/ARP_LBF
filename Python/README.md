@@ -29,7 +29,7 @@ pip install sklearn
 pip install matplotlib
 ```
 
-### Installing in Pycharm
+### Installing in Pycharm (recommended)
 If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the recommended installation method
 - [1. clone this repository in your PC](https://github.com/Cc-bugwriter/ARP_LBF.git)
 - [2. open Pycharm and create a project from Python folder, which is located in your cloned path]
