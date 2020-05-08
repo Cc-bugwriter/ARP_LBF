@@ -1,3 +1,6 @@
+Version: 1.01
+- add random search, optimize default structure
+----------------------------------------
 # MLP Receptron
 MLP Receptron is a Multi-layer artificial intelligence network，which base on python library.
 
@@ -68,6 +71,10 @@ hier is a simple description for each script
 ### Nodes
 all necessary nodes can belong to three blockes:
 - [Preprocessing]
+-- [pre_processing.py]
 - [Regression]
+-- [Regressor.py]
 - [Classification]
+-- [Classifier.py]
 - [Evaluation]
+-- [confusion_matrix.py], [hyper_search.py], [plot_learning_curve.py], [plot_regularization.py]
