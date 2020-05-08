@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import math
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV
+from Evaluation import hyper_search as search
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import plot_confusion_matrix
 from sklearn import preprocessing
@@ -114,10 +116,10 @@ def dataset_preprocess(input_set, target_set=None):
         # convert [5*1] array to [1*1] float
         for i in range(target_set.shape[1]):
             target_set[:, i] = target_set[:, i] * 10 ** i
-        # target_set = np.sum(target_set, axis=1, dtype=int)
+        target_set = np.sum(target_set, axis=1, dtype=int)
 
         # convert [1*1] float to str
-        target_set_list = np.sum(target_set, axis=1, dtype=int).tolist()
+        target_set_list = target_set.tolist()
 
         target_name = []
         for i in target_set_list:
@@ -205,16 +207,107 @@ def confusion_matrix(estimator, input_set, target_set, target_name, random_seed=
     plt.show()
 
 
+def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
+    """
+    evaluate determination coefficient of variable regularisation coefficient,
+    find the best result and visualize evaluation process
+
+    :param estimator: [estimator],  MLP Perceptron model
+    :param input_set: [narray],  Input data set
+    :param target_set: [narray],  Target data set
+    :param deep: [int],  the number of layer width (default value: 3)
+    :param random_mode: [boolen],  choose to random search
+    """
+    # find the lease common multiple, which base on the number of input's and target's feature
+    try:
+        target_set.shape[1]
+    except IndexError:
+        width = input_set.shape[1] * 63 / math.gcd(input_set.shape[1], 63)
+        width = int(width)
+
+        # assign possible neuron number in domain
+        candidate_neuron = range(63, width)
+
+    else:
+        width = input_set.shape[1] * target_set.shape[1] / math.gcd(input_set.shape[1], target_set.shape[1])
+        width = int(width)
+
+        # assign possible neuron number in domain
+        candidate_neuron = range(target_set.shape[1], width)
+
+    # assign possible neuron number in domain
+    candidate_neuron = range(target_set.shape[1], width)
+
+    # initialize the hidden_layer_sizes
+    hidden_layer_sizes = []
+
+    # assign possible hidden_layer_sizes
+    if deep == 5:
+        for layer_5 in candidate_neuron:
+            for layer_4 in candidate_neuron:
+                for layer_3 in candidate_neuron:
+                    for layer_2 in candidate_neuron:
+                        for layer_1 in candidate_neuron:
+                            if layer_5 < layer_4 and layer_4 < layer_3 and \
+                                    layer_3 < layer_2 and layer_2 < layer_1:
+                                hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4, layer_5))
+    if deep == 4:
+        for layer_4 in candidate_neuron:
+            for layer_3 in candidate_neuron:
+                for layer_2 in candidate_neuron:
+                    for layer_1 in candidate_neuron:
+                        if layer_4 < layer_3 and layer_3 < layer_2 and layer_2 < layer_1:
+                            hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4))
+    if deep == 3:
+        for layer_3 in candidate_neuron:
+            for layer_2 in candidate_neuron:
+                for layer_1 in candidate_neuron:
+                    if layer_3 < layer_2 and layer_2 < layer_1:
+                        hidden_layer_sizes.append((layer_1, layer_2, layer_3))
+    elif deep == 2:
+        for layer_2 in candidate_neuron:
+            for layer_1 in candidate_neuron:
+                if layer_2 < layer_1:
+                    hidden_layer_sizes.append((layer_1, layer_2))
+    elif deep == 1:
+        for layer_1 in candidate_neuron:
+            hidden_layer_sizes.append((layer_1))
+
+    # assign full grid over all hyper parameters
+    param_space = {
+        'hidden_layer_sizes': hidden_layer_sizes,
+        'activation': ['relu', 'logistic'],
+        'solver': ['lbfgs'],
+        'alpha': np.logspace(-5, -2, 30),
+        'max_iter': np.logspace(3, 4, 10)}
+
+    # run hyper parameter search
+    if random_mode:
+        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space)
+    else:
+        hyper_search = GridSearchCV(estimator, param_grid=param_space)
+
+    hyper_search.fit(input_set, target_set)
+
+    # reprot result of grid search
+    search_result = hyper_search.cv_results_
+    search.report_search(search_result)
+
+    candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
+
+    return search_result[['params']][candidates]
+
+
 if __name__ == '__main__':
     # ignore all future warnings
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    for i in range(1, 4):
+    for i in range(1, 2):
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
-        MLP_classifier, _, _ = classifier(input_set, target_name)
+        MLP_classifier, _, _ = classifier(input_set, target_set)
 
     # # preprocess for classification
     # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)
