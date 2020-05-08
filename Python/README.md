@@ -1,1 +1,73 @@
+# MLP Receptron
+MLP Receptron is a Multi-layer artificial intelligence network，which base on python library.
 
+# Installation
+MLP Receptron depends on a few of popular data science library. 
+Before using MLP Receptron please install those necessary libraries in your local enviroment:
+## Table of Libraries
+- [math]
+- [numpy]
+- [pandas]
+- [zipfile]
+- [sklearn]
+- [warnings]
+- [matplotlib]
+
+### Installing with Anaconda
+The simplest way to install not only pandas, but Python and the most popular packages that make up the SciPy stack (IPython, NumPy, Matplotlib, …) is with [Anaconda](https://www.anaconda.com/distribution/), a cross-platform (Linux, Mac OS X, Windows) Python distribution for data analytics and scientific computing.
+Installation instructions for [Anaconda](https://www.anaconda.com/distribution/) [can be found here.](https://docs.continuum.io/anaconda/install/)
+
+### Installing from PyPI
+All libraries can also be installed via pip from [PyPI](https://pypi.org/)
+```bash
+pip install numpy
+pip install pandas
+pip install sklearn
+pip install matplotlib
+```
+
+### Installing in Pycharm
+If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the recommended installation method
+- [1. clone this repository in your PC](https://github.com/Cc-bugwriter/ARP_LBF.git)
+- [2. open Pycharm and create a project from Python folder, which is located in your cloned path]
+- [3. after creating project, click file --> Project: Python --> Project Interpreter]
+- [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok]
+- [5. back to Settings interface --> click  +  button --> Available Packages]
+- [6. manually install the libraries](## Table of Libraries)
+
+## Usage
+please open .py file in Pycharm IDE
+choose [MLP_Preceptron] and enter ['shift + F10']
+
+## Contributing
+Pull requests are welcome. For major changes, please first to discuss what you would like to change in Whatsapp Group.
+
+Please make sure to update tests as appropriate.
+
+## Description
+hier is a simple description for each script
+### Function
+[MLP_Preceptron] is already packaged script, which relay on node in each subfiles.
+[MLP_Regression] and [MLP_Classifier] are debug version, which have same sub-funtion like in [MLP_Preceptron].
+
+[MLP_Regression] check for :
+- [load data set]
+- [preprocessing]
+- [model Regressor]
+- [evaluation]
+- [hyper Search]
+
+
+[MLP_Classifier] check for :
+- [load data set]
+- [preprocessing]
+- [model Regressor]
+- [evaluation]
+- [hyper Search]
+
+### Nodes
+all necessary nodes can belong to three blockes:
+- [Preprocessing]
+- [Regression]
+- [Classification]
+- [Evaluation]
