@@ -1,5 +1,7 @@
 import math
 import numpy as np
+import pandas as pd
+import zipfile
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 
@@ -18,34 +20,28 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     try:
         target_set.shape[1]
     except IndexError:
+        # classification
         width = input_set.shape[1] * 63 / math.gcd(input_set.shape[1], 63)
         width = int(width)
 
         # assign possible neuron number in domain
-        candidate_neuron = range(63, width)
+        candidate_neuron = range(63, min(width, 2*63))
+        model = 'classification'
 
     else:
+        # regression
         width = input_set.shape[1] * target_set.shape[1] / math.gcd(input_set.shape[1], target_set.shape[1])
         width = int(width)
 
         # assign possible neuron number in domain
         candidate_neuron = range(target_set.shape[1], width)
+        model = 'regression'
 
     # initialize the hidden_layer_sizes
     hidden_layer_sizes = []
 
     # assign possible hidden_layer_sizes
     if deep == 5:
-<<<<<<< HEAD
-        for layer_5 in candidate_neuron:
-            for layer_4 in candidate_neuron:
-                for layer_3 in candidate_neuron:
-                    for layer_2 in candidate_neuron:
-                        for layer_1 in candidate_neuron:
-                            if layer_5 < layer_4 and layer_4 < layer_3 and \
-                                    layer_3 < layer_2 and layer_2 < layer_1:
-                                hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4, layer_5))
-=======
         if model == 'classification':
             zf = zipfile.ZipFile('Data/hidden_layer_sizes_5_clf.zip')
             df = pd.read_csv(zf.open('hidden_layer_sizes_5_clf.csv'))
@@ -53,7 +49,6 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
         elif model == 'classification':
             df = pd.read_csv('Data/hidden_layer_sizes_5_mlg.csv')
             hidden_layer_sizes = [list(row) for row in df.values]
->>>>>>> 1eb5a76... version 1.01.3
     if deep == 4:
         for layer_4 in candidate_neuron:
             for layer_3 in candidate_neuron:
@@ -86,9 +81,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
 
     # run hyper parameter search
     if random_mode:
-        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space)
+        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space, n_jobs=6)
     else:
-        hyper_search = GridSearchCV(estimator, param_grid=param_space)
+        hyper_search = GridSearchCV(estimator, param_grid=param_space, n_jobs=6)
 
     hyper_search.fit(input_set, target_set)
 

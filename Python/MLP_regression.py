@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import math
+import zipfile
 from Evaluation import plot_learning_curve as plc
 from Evaluation import hyper_search as search
 from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV, RandomizedSearchCV
@@ -151,7 +152,7 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.373
 
     # setup a MLP Regressor 3 layers
     regressor = MLPRegressor(solver='lbfgs', alpha=alpha,
-                       hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
+                       hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter, n_jobs=6)
 
     # fit Regressor to the training data
     regressor.fit(X_train, y_train)
@@ -258,37 +259,28 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     try:
         target_set.shape[1]
     except IndexError:
+        # classification
         width = input_set.shape[1] * 63 / math.gcd(input_set.shape[1], 63)
         width = int(width)
 
         # assign possible neuron number in domain
         candidate_neuron = range(63, width)
+        model = 'classification'
 
     else:
+        # regression
         width = input_set.shape[1] * target_set.shape[1] / math.gcd(input_set.shape[1], target_set.shape[1])
         width = int(width)
 
         # assign possible neuron number in domain
         candidate_neuron = range(target_set.shape[1], width)
-
-    # assign possible neuron number in domain
-    candidate_neuron = range(target_set.shape[1], width)
+        model = 'regression'
 
     # initialize the hidden_layer_sizes
     hidden_layer_sizes = []
 
     # assign possible hidden_layer_sizes
     if deep == 5:
-<<<<<<< HEAD
-        for layer_5 in candidate_neuron:
-            for layer_4 in candidate_neuron:
-                for layer_3 in candidate_neuron:
-                    for layer_2 in candidate_neuron:
-                        for layer_1 in candidate_neuron:
-                            if layer_5 < layer_4 and layer_4 < layer_3 and \
-                                    layer_3 < layer_2 and layer_2 < layer_1:
-                                hidden_layer_sizes.append((layer_1, layer_2, layer_3, layer_4, layer_5))
-=======
         if model == 'classification':
             zf = zipfile.ZipFile('Data/hidden_layer_sizes_5_clf.zip')
             df = pd.read_csv(zf.open('hidden_layer_sizes_5_clf.csv'))
@@ -296,7 +288,6 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
         elif model == 'classification':
             df = pd.read_csv('Data/hidden_layer_sizes_5_mlg.csv')
             hidden_layer_sizes = [list(row) for row in df.values]
->>>>>>> 1eb5a76... version 1.01.3
     if deep == 4:
         for layer_4 in candidate_neuron:
             for layer_3 in candidate_neuron:
@@ -377,5 +368,5 @@ if __name__ == '__main__':
     evaluation_learning_curve(MLP_regression, input_set, target_set)  # learning curve
     plot_regularization(MLP_regression, input_set, target_set)  # regularization coefficient
 
-    # grid search
+    # random search
     hyper_search(MLP_regression, input_set, target_set)
