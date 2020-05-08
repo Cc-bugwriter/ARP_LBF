@@ -140,7 +140,7 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=0.000
     :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (105, 70, 46))
     :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : (105, 70, 46))
 
-    :return regressor: [estimator],  MLP Regressor with
+    :return regressor: [estimator],  MLP Classifier with
     :return score: [float], accuracy of test data set
     :return weight_matrix: [narray], weight matrix of training data set
     """
@@ -160,7 +160,10 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=0.000
     score = classifier.score(X_test, y_test)
     print('Test Score (Accuracy): %f' % score)
 
-    return classifier, score
+    # compute Weight matrix
+    weight_matrix = classifier.fit(X_train, y_train).coefs_
+
+    return classifier, score, weight_matrix
 
 
 def confusion_matrix(estimator, input_set, target_set, target_name, random_seed=23, test_size=0.2):
@@ -173,9 +176,6 @@ def confusion_matrix(estimator, input_set, target_set, target_name, random_seed=
         :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
         :param random_seed: [int], the random seed of random split for data set (default value : 23)
 
-        :return regressor: [estimator],  MLP Regressor with
-        :return score: [float], accuracy of test data set
-        :return weight_matrix: [narray], weight matrix of training data set
         """
     # Split into training and test set
     X_train, X_test, y_train, y_test = \
@@ -211,13 +211,13 @@ if __name__ == '__main__':
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
-        MLP_classifier, _ = classifier(input_set, target_set)
+        MLP_classifier, _, _ = classifier(input_set, target_set)
 
     # preprocess for classification
-    # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)
+    input_set, _, _, target_set = dataset_preprocess(input_set, target_set)
 
     # model MLP Classifie
-    # MLP_classifier, _ = classifier(input_set, target_set)
+    MLP_classifier, _, _ = classifier(input_set, target_set)
 
     # evaluation
     confusion_matrix(MLP_classifier, input_set, target_set, target_name)

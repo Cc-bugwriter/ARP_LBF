@@ -15,11 +15,21 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     :param random_mode: [boolen],  choose to random search or grid search (default value: True)
     """
     # find the lease common multiple, which base on the number of input's and target's feature
-    width = input_set.shape[1] * target_set.shape[1] / math.gcd(input_set.shape[1], target_set.shape[1])
-    width = int(width)
+    try:
+        target_set.shape[1]
+    except IndexError:
+        width = input_set.shape[1] * 63 / math.gcd(input_set.shape[1], 63)
+        width = int(width)
 
-    # assign possible neuron number in domain
-    candidate_neuron = range(target_set.shape[1], width)
+        # assign possible neuron number in domain
+        candidate_neuron = range(63, width)
+
+    else:
+        width = input_set.shape[1] * target_set.shape[1] / math.gcd(input_set.shape[1], target_set.shape[1])
+        width = int(width)
+
+        # assign possible neuron number in domain
+        candidate_neuron = range(target_set.shape[1], width)
 
     # initialize the hidden_layer_sizes
     hidden_layer_sizes = []
@@ -45,7 +55,8 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
         'hidden_layer_sizes': hidden_layer_sizes,
         'activation': ['relu'],
         'solver': ['lbfgs'],
-        'alpha': np.logspace(-5, -2, 30)}
+        'alpha': np.logspace(-5, -2, 30),
+        'max_iter': np.logspace(3, 4, 10)}
 
     # run hyper parameter search
     if random_mode:
@@ -59,7 +70,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     search_result = hyper_search.cv_results_
     report_search(search_result)
 
-    return search_result
+    candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
+
+    return candidates
 
 
 def report_search(results, n_top=3):

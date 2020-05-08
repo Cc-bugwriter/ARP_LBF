@@ -287,7 +287,8 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
         'hidden_layer_sizes': hidden_layer_sizes,
         'activation': ['relu'],
         'solver': ['lbfgs'],
-        'alpha': np.logspace(-5, -2, 30)}
+        'alpha': np.logspace(-5, -2, 30),
+        'max_iter': np.logspace(3, 4, 10)}
 
     # run hyper parameter search
     if random_mode:
@@ -301,7 +302,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     search_result = hyper_search.cv_results_
     search.report_search(search_result)
 
-    return search_result
+    candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
+
+    return candidates
 
 
 def merge_data():
