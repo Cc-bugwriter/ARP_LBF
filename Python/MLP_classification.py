@@ -104,15 +104,19 @@ def dataset_preprocess(input_set, target_set=None):
     if target_set is not None:
         # assign reference value
         target_set_ref = [1, 1, 1, 2, 0.6261, 0.0001]
+
         # decide change of target parameter
         for i, reference in enumerate(target_set_ref):
             target_set[:, i] = target_set[:, i] != reference
         # convert boolen to int
         target_set = target_set.astype(int)
 
-        # convert [5*1] array to str
+        # convert [5*1] array to [1*1] float
         for i in range(target_set.shape[1]):
             target_set[:, i] = target_set[:, i] * 10 ** i
+        # target_set = np.sum(target_set, axis=1, dtype=int)
+
+        # convert [1*1] float to str
         target_set_list = np.sum(target_set, axis=1, dtype=int).tolist()
 
         target_name = []
@@ -125,7 +129,8 @@ def dataset_preprocess(input_set, target_set=None):
     return input_set, input_std, input_mean
 
 
-def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=0.00013738, hidden_layer_sizes=(46, 29, 26), max_iter=1000):
+def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.17e-3,
+               hidden_layer_sizes= (45, 19, 17), max_iter=6000):
     """
     modeling a MLP classifier with random split all data set.
     after training print out test score on console.
@@ -134,9 +139,9 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=0.000
     :param target_set: [narray],  Target of Training Network
     :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
     :param random_seed: [int], the random seed of random split for data set (default value : 233)
-    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 8e-3)
-    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (105, 70, 46))
-    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : (105, 70, 46))
+    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 1.17e-3)
+    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (45, 19, 17))
+    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 6000)
 
     :return regressor: [estimator],  MLP Classifier with
     :return score: [float], accuracy of test data set
@@ -205,17 +210,17 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    for i in range(1, 7):
+    for i in range(1, 4):
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
-        MLP_classifier, _, _ = classifier(input_set, target_set)
+        MLP_classifier, _, _ = classifier(input_set, target_name)
 
-    # preprocess for classification
-    input_set, _, _, target_set = dataset_preprocess(input_set, target_set)
-
-    # model MLP Classifie
-    MLP_classifier, _, _ = classifier(input_set, target_set)
+    # # preprocess for classification
+    # input_set, _, _, target_set = dataset_preprocess(input_set, target_set)
+    #
+    # # model MLP Classifie
+    # MLP_classifier, _, _ = classifier(input_set, target_set)
 
     # evaluation
-    confusion_matrix(MLP_classifier, input_set, target_set, target_name)
+    # confusion_matrix(MLP_classifier, input_set, target_set, target_name)

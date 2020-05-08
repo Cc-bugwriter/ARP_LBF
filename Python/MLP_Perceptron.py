@@ -42,7 +42,8 @@ def optimize(model, deep_space=np.linspace(3, 3, num=1)):
     """
     optimize function of NN
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
-    :param deep_space: [narray],  network layer space (default value: np.linspace(3, 3, num=1))
+    :param deep_space: [narray],  network layer space, np.linspace(a, b, num=b-a+1)
+                        (default value: np.linspace(3, 3, num=1))
     """
     # load data set
     input_set, target_set = pre_processing.merge_data()
@@ -60,12 +61,13 @@ def optimize(model, deep_space=np.linspace(3, 3, num=1)):
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
 
     # search best hyper parameter
-    if model == "Regressor":
-        regressor_search = hyper_search.hyper_search(regressor, input_set, target_set)
-        return regressor_search
-    elif model == "Classifier":
-        classifier_search = hyper_search.hyper_search(classifier, input_set, target_set)
-        return classifier_search
+    for deep in deep_space:
+        if model == "Regressor":
+            regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep)
+            return regressor_search
+        elif model == "Classifier":
+            classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep)
+            return classifier_search
 
 
 if __name__ == '__main__':
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # optimize hyper parameter
-    parameter_space = optimize("Classifier")
+    parameter_space = optimize("Classifier", deep_space=np.linspace(1, 5, num=5))
 
     # # train network
     # main("Classifier", parameter_space)

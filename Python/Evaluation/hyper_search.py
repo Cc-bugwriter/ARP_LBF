@@ -69,7 +69,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     # assign full grid over all hyper parameters
     param_space = {
         'hidden_layer_sizes': hidden_layer_sizes,
-        'activation': ['relu', 'logistic'],
+        'activation': ['relu'],
         'solver': ['lbfgs'],
         'alpha': np.logspace(-5, -2, 30),
         'max_iter': np.logspace(3, 4, 10)}
