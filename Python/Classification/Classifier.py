@@ -3,7 +3,7 @@ from sklearn.neural_network import MLPClassifier
 
 
 def classifier(input_set, target_set, test_size=0.2, random_seed=23,
-               alpha=0.00013738, hidden_layer_sizes=(45, 19, 17), max_iter=6000,
+               alpha=0.00017433288, hidden_layer_sizes=(177, 166, 97), max_iter=3000,
                hyperparameter=None):
     """
     modeling a MLP classifier with random split all data set.
@@ -13,9 +13,9 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     :param target_set: [narray],  Target of Training Network
     :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
     :param random_seed: [int], the random seed of random split for data set (default value : 23)
-    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 1.17e-3)
-    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (45, 19, 17))
-    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 6000)
+    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 00017433288)
+    :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (177, 166, 97))
+    :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 2782)
     :param hyperparameter: [dic], optimal hyper parameter, which comes from hyper search (default value: None)
 
     :return regressor: [estimator],  MLP Regressor with

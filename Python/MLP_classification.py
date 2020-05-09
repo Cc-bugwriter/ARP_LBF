@@ -132,8 +132,8 @@ def dataset_preprocess(input_set, target_set=None):
     return input_set, input_std, input_mean
 
 
-def classifier(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.17e-3,
-               hidden_layer_sizes= (45, 19, 17), max_iter=6000):
+def classifier(input_set, target_set, test_size=0.2, random_seed=23,
+               alpha=0.00017433288, hidden_layer_sizes=(177, 166, 97), max_iter=3000):
     """
     modeling a MLP classifier with random split all data set.
     after training print out test score on console.
@@ -320,7 +320,7 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    for i in range(1, 2):
+    for i in range(1, 8):
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
@@ -333,4 +333,4 @@ if __name__ == '__main__':
     input_set, target_set = merge_data()
     input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
     # random search
-    hyper_search(MLP_classifier, input_set, target_set)
+    hyper_search(MLP_classifier, input_set, target_set, deep=4)
