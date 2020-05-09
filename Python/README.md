@@ -32,10 +32,10 @@ pip install matplotlib
 ### Installing in Pycharm (recommended)
 If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the recommended installation method
 - [1. clone this repository in your PC](https://github.com/Cc-bugwriter/ARP_LBF.git)
-- 2. open Pycharm and create a project from Python folder, which is located in your cloned path
-- 3. after creating project, click file --> Project: Python --> Project Interpreter
-- 4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok
-- 5. back to Settings interface --> click  +  button --> Available Packages
+- [2. open Pycharm and create a project from Python folder, which is located in your cloned path]
+- [3. after creating project, click file --> Project: Python --> Project Interpreter]
+- [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok]
+- [5. back to Settings interface --> click  +  button --> Available Packages]
 - [6. manually install the libraries](##Table of Libraries)
 
 ## Usage
