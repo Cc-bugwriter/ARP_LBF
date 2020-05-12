@@ -35,7 +35,7 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     else:
         # update hyper parameter base on hyper search
         classifier = MLPClassifier(solver='lbfgs')
-        classifier.set_params(hyperparameter)
+        classifier.set_params(**hyperparameter)
 
     # fit Regressor to the training data
     classifier.fit(X_train, y_train)

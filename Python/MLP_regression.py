@@ -152,7 +152,7 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.373
 
     # setup a MLP Regressor 3 layers
     regressor = MLPRegressor(solver='lbfgs', alpha=alpha,
-                       hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter, n_jobs=6)
+                       hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
 
     # fit Regressor to the training data
     regressor.fit(X_train, y_train)
@@ -364,9 +364,9 @@ if __name__ == '__main__':
     # model MLP Regressor
     MLP_regression, _, _ = regression(input_set, target_set)
 
-    # evaluation
-    evaluation_learning_curve(MLP_regression, input_set, target_set)  # learning curve
-    plot_regularization(MLP_regression, input_set, target_set)  # regularization coefficient
-
-    # random search
-    hyper_search(MLP_regression, input_set, target_set)
+    # # evaluation
+    # evaluation_learning_curve(MLP_regression, input_set, target_set)  # learning curve
+    # plot_regularization(MLP_regression, input_set, target_set)  # regularization coefficient
+    #
+    # # random search
+    # hyper_search(MLP_regression, input_set, target_set)

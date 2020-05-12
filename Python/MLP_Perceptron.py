@@ -10,34 +10,41 @@ from sklearn.neural_network import MLPRegressor, MLPClassifier
 from warnings import simplefilter
 
 
-def main(model, hyperparameter=None):
+def main(model_type, hyperparameter=None, data_version="PmitT"):
     """
     main function of NN
-    :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
+    :param model_type: [str],  MLP perceptron model ("Classifier" or "Regressor")
+    :param hyperparameter: [dict], result of hyper search
+    :param data_version: [str], version of data set
     """
     # load data set
     input_set, target_set = dataset_reader.merge_data()
 
     # preprocess for MLP preceptron
-    if model == "Regressor":
+    if model_type == "Regressor":
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
-    elif model == "Classifier":
+    elif model_type == "Classifier":
         input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
 
     # training MLP preceptron
-    if model == "Regressor":
-        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter)
-    elif model == "Classifier":
-        classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter)
+    if model_type == "Regressor":
+        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter)
+    elif model_type == "Classifier":
+        classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
 
-    # evaluate MLP preceptron
-    if model == "Regressor":
-        plot_learning_curve.evaluation_learning_curve(regressor, input_set, target_set)
-    elif model == "Classifier":
-        confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
+    # save model and prediction result
+    Parameter_path = f"Model_parameters/{data_version}"
+    Save_model.save_Preceptron(regressor, input_set, target_set, path=Parameter_path)
+
+    # # evaluate MLP preceptron
+    # if model_type == "Regressor":
+    #     plot_learning_curve.evaluation_learning_curve(regressor, input_set, target_set,
+    #                                                   title=f"{hyperparameter['hidden_layer_sizes']}")
+    # elif model_type == "Classifier":
+    #     confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
 
 
-def optimize(model, deep=3, Data_version="PmitT"):
+def optimize(model, deep=3):
     """
     optimize function of MLP
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
@@ -64,19 +71,11 @@ def optimize(model, deep=3, Data_version="PmitT"):
         # implement hyper search
         regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep)
 
-        # save model and prediction result
-        Parameter_path = f"Model_parameters/{Data_version}"
-        Save_model(regressor, input_set, target_set, path=Parameter_path)
-
         return regressor_search
 
     elif model == "Classifier":
         # implement hyper search
         classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep)
-
-        # save model and prediction result
-        Parameter_path = f"Model_parameters/{Data_version}"
-        Save_model(classifier, input_set, target_set, path=Parameter_path)
 
         return classifier_search
 
@@ -88,7 +87,7 @@ if __name__ == '__main__':
 
     # define type of Model
     model_type = "Regressor"
-    model_type = "Classifier"
+    # model_type = "Classifier"
 
     # optimize hyper parameter
     deep_space = np.linspace(1, 1, num=1)

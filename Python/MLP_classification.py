@@ -382,7 +382,8 @@ if __name__ == '__main__':
 
     clf_parameter = MLP_classifier.get_params()
     clf_parameter_df = pd.DataFrame.from_dict(clf_parameter)
-    Paremeter_version = "PmitT"
-    Parameter_name = "clf_parameter_layer_3"
-    Parameter_path = f"Model_parameters/{Paremeter_version}/{Parameter_name}.csv"
-    clf_parameter_df.to_csv(Parameter_path)
+    data_version = "PmitT"
+    model_name = "classifier_layer_3"
+    model_path = f"Model_parameters/{data_version}/{model_name}.pkl"
+    joblib.dump(MLP_classifier, model_path)
+    # clf_parameter_df.to_csv(Parameter_path)

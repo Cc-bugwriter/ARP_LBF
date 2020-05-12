@@ -132,7 +132,7 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
 
 
 def evaluation_learning_curve(estimator, input_set, target_set,
-                              title="(46, 29, 26)", test_size=0.2, train_sizes=np.linspace(0.01, 1.0, 25)):
+                              title="(46, 29, 26)", test_size=0.2, train_sizes=np.linspace(0.1, 1.0, 20)):
     """
     evaluate estimator fitting quality and performance, which implements on random cross validation.
     the data size of cross validation will linear increase, so that could research the overfitting and underfitting problem
@@ -154,5 +154,5 @@ def evaluation_learning_curve(estimator, input_set, target_set,
 
     # recall function
     plot_learning_curve(estimator, title, input_set, target_set,
-                            cv=cv, ylim=(0., 1.01), n_jobs=6, train_sizes=train_sizes)
+                            cv=cv, ylim=(0., 1.01), n_jobs=-1, train_sizes=train_sizes)
     plt.show()

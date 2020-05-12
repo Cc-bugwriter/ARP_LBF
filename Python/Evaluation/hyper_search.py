@@ -92,8 +92,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     report_search(search_result)
 
     candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
+    candidate = candidates[0]
 
-    return search_result[['params']][candidates]
+    return search_result['params'][candidate]
 
 
 def report_search(results, n_top=3):

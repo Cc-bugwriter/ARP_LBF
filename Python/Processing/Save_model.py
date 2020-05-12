@@ -18,7 +18,7 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
     try:
         target_set.shape[1]
     except IndexError:
-        estimator_class = 'claasifier'
+        estimator_class = 'classifier'
     else:
         estimator_class = 'regressor'
 
@@ -27,7 +27,7 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
         os.makedirs(path)
 
     # assign depth of MLP
-    hyperparameter = estimator.get_get_params()
+    hyperparameter = estimator.get_params()
     deep = len(hyperparameter["hidden_layer_sizes"])
 
     # determine pkl file and save

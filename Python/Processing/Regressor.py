@@ -2,8 +2,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 
 
-def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.3738e-4,
-               hidden_layer_sizes=(46, 29, 26), max_iter=1000, hyperparameter=None):
+def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed=233,
+               hidden_layer_sizes=(46, 29, 26), max_iter=1000,
+               hyperparameter=None):
     """
     modeling a MLP Regressor with random split all data set.
     after training print out test score on console.
@@ -33,8 +34,8 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.373
                                  hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
     else:
         # update hyper parameter base on hyper search
-        classifier = MLPRegressor(solver='lbfgs')
-        classifier.set_params(hyperparameter)
+        regressor = MLPRegressor(solver='lbfgs')
+        regressor.set_params(**hyperparameter)
 
     # fit Regressor to the training data
     regressor.fit(X_train, y_train)
