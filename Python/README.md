@@ -1,3 +1,7 @@
+Version: 1.02
+- add adaptive hyperparameter search
+- add model save and load function
+----------------------------------------
 Version: 1.01
 - add random search, optimize default structure
 ----------------------------------------
