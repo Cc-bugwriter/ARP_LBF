@@ -320,7 +320,7 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    for i in range(1, 8):
+    for i in range(1, 3):
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
@@ -328,9 +328,14 @@ if __name__ == '__main__':
 
     # evaluation
     # confusion_matrix(MLP_classifier, input_set, target_set, target_name)
+    clf_parameter = MLP_classifier.get_params()
+    clf_parameter_df = pd.DataFrame.from_dict(clf_parameter)
+    Parameter_name = "clf_parameter_layer_3"
+    Parameter_path = f"Parameter/{Parameter_name}.csv"
+    clf_parameter_df.to_csv(Parameter_path)
 
     # load merge data and preprocess
     input_set, target_set = merge_data()
     input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
     # random search
-    hyper_search(MLP_classifier, input_set, target_set, deep=4)
+    # hyper_search(MLP_classifier, input_set, target_set, deep=4)
