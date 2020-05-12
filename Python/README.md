@@ -9,12 +9,16 @@ MLP Receptron depends on a few of popular data science library.
 Before using MLP Receptron please install those necessary libraries in your local enviroment:
 ## Table of Libraries
 - [math]
-- [numpy]
-- [pandas]
+- [numpy] -- 1.16.4
+- [pandas] -- 0.24.2
+- [seaborn] -- 0.9.0
+- [scipy] -- 1.2.1
+- [keras] -- 2.2.4
 - [zipfile]
-- [sklearn]
+- [sklearn] -- 0.20.3
 - [warnings]
 - [matplotlib]
+- [tensorflow] -- 1.13.1
 
 ### Installing with Anaconda
 The simplest way to install not only pandas, but Python and the most popular packages that make up the SciPy stack (IPython, NumPy, Matplotlib, …) is with [Anaconda](https://www.anaconda.com/distribution/), a cross-platform (Linux, Mac OS X, Windows) Python distribution for data analytics and scientific computing.
@@ -36,7 +40,7 @@ If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the r
 - [3. after creating project, click file --> Project: Python --> Project Interpreter]
 - [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok]
 - [5. back to Settings interface --> click  +  button --> Available Packages]
-- [6. manually install the libraries](##Table of Libraries)
+- [6. manually install the libraries --> speicial version must be check the same with above list ](##Table of Libraries)
 
 ## Usage
 please open .py file in Pycharm IDE
