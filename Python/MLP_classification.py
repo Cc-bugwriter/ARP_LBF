@@ -10,6 +10,9 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn import preprocessing
 from warnings import simplefilter
 
+import os
+from sklearn.externals import joblib
+
 
 class Classification():
     """
@@ -77,7 +80,6 @@ def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     elif name in datasets_v3:
         label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
         label_x.append('Tem')
-
 
     input_set = df[label_x].values
     target_set = df[label_y].values
@@ -249,7 +251,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
             zf = zipfile.ZipFile('Data/hidden_layer_sizes_5_clf.zip')
             df = pd.read_csv(zf.open('hidden_layer_sizes_5_clf.csv'))
             hidden_layer_sizes = [list(row) for row in df.values]
-        elif model == 'classification':
+        elif model == 'regression':
             df = pd.read_csv('Data/hidden_layer_sizes_5_mlg.csv')
             hidden_layer_sizes = [list(row) for row in df.values]
     if deep == 4:
@@ -299,6 +301,49 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
     return search_result[['params']][candidates]
 
 
+def save_Preceptron(estimator, input_set, target_set, path, name, overwrite=False):
+    """
+    save the estimator class with trained parameter
+    :param estimator: [estimator],  MLP Perceptron model
+    :param input_set: [narray],  Input data set, use to predict result
+    :param target_set: [narray],  Target data set, use to determine estimator class
+    :param path: [str],  saving path
+    :param name: [str],  model name
+    """
+    # determine estimator class
+    try:
+        target_set.shape[1]
+    except IndexError:
+        estimator_class = 'claasifier'
+    else:
+        estimator_class = 'regressor'
+
+    # determine path
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    # determine pkl file and save
+    model_name = f"{path}/{name}_{estimator_class}.pkl"
+    if not os.path.exists(model_name):
+        joblib.dump(estimator, model_name)
+    elif overwrite:
+        joblib.dump(estimator, model_name)
+
+    # assign prediction result
+    MLP_prediction = estimator.predict(input_set)
+    MLP_prediction_df = pd.DataFrame.from_dict(MLP_prediction)
+
+    # determine csv file and save
+    prediction_name = f"{path}/{name}_{estimator_class}.csv"
+    if not os.path.exists(model_name):
+        MLP_prediction_df.to_csv(prediction_name)
+    elif overwrite:
+        MLP_prediction_df.to_csv(prediction_name)
+
+    print("estimator class: {}".format(estimator_class))
+    print("model and prediction result saved at {}".format(path))
+
+
 def merge_data():
     """
     merge all data in a couple of data sets
@@ -320,7 +365,7 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # load data and preprocess
-    for i in range(1, 3):
+    for i in range(1, 8):
         name = f"{i}PmitT"
         input_set, target_set = dataset_reader(name=name)
         input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
@@ -328,14 +373,16 @@ if __name__ == '__main__':
 
     # evaluation
     # confusion_matrix(MLP_classifier, input_set, target_set, target_name)
-    clf_parameter = MLP_classifier.get_params()
-    clf_parameter_df = pd.DataFrame.from_dict(clf_parameter)
-    Parameter_name = "clf_parameter_layer_3"
-    Parameter_path = f"Parameter/{Parameter_name}.csv"
-    clf_parameter_df.to_csv(Parameter_path)
 
     # load merge data and preprocess
     input_set, target_set = merge_data()
     input_set, _, _, target_set, target_name = dataset_preprocess(input_set, target_set)
     # random search
     # hyper_search(MLP_classifier, input_set, target_set, deep=4)
+
+    clf_parameter = MLP_classifier.get_params()
+    clf_parameter_df = pd.DataFrame.from_dict(clf_parameter)
+    Paremeter_version = "PmitT"
+    Parameter_name = "clf_parameter_layer_3"
+    Parameter_path = f"Model_parameters/{Paremeter_version}/{Parameter_name}.csv"
+    clf_parameter_df.to_csv(Parameter_path)

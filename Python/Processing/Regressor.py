@@ -30,7 +30,7 @@ def regression(input_set, target_set, test_size=0.2, random_seed=23, alpha=1.373
     if hyperparameter is None:
         # MLP Regressor 3 layers (default)
         regressor = MLPRegressor(solver='lbfgs', alpha=alpha,
-                                 hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter, n_jobs=6)
+                                 hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
     else:
         # update hyper parameter base on hyper search
         classifier = MLPRegressor(solver='lbfgs')

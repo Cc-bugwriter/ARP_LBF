@@ -81,9 +81,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True):
 
     # run hyper parameter search
     if random_mode:
-        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space, n_jobs=6)
+        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space, n_jobs=-1)
     else:
-        hyper_search = GridSearchCV(estimator, param_grid=param_space, n_jobs=6)
+        hyper_search = GridSearchCV(estimator, param_grid=param_space, n_jobs=-1)
 
     hyper_search.fit(input_set, target_set)
 

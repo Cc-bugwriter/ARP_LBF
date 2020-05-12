@@ -31,7 +31,7 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     if hyperparameter is None:
         # MLP Classifier 3 layers (default)
         classifier = MLPClassifier(solver='lbfgs', alpha=alpha,
-                                   hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter, n_jobs=6)
+                                   hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
     else:
         # update hyper parameter base on hyper search
         classifier = MLPClassifier(solver='lbfgs')
