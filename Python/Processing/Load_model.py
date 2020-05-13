@@ -19,7 +19,7 @@ def save_Preceptron(input_set, target_set, path, deep=3):
         estimator_class = 'regressor'
 
     # determine pkl file and save
-    model_name = f"{path}/{estimator_class}_layer_{deep}.pkl"
+    model_name = f"{path}/{estimator_class}_layer_{deep}.joblib"
 
     # Load from file
     estimator = joblib.load(model_name)

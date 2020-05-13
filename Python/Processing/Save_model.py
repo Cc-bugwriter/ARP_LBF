@@ -28,10 +28,17 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
 
     # assign depth of MLP
     hyperparameter = estimator.get_params()
-    deep = len(hyperparameter["hidden_layer_sizes"])
 
-    # determine pkl file and save
-    model_name = f"{path}/{estimator_class}_layer_{deep}.pkl"
+    # make sure that 1 layer MLP could also have depth
+    try:
+        len(hyperparameter["hidden_layer_sizes"])
+    except TypeError:
+        deep = 1
+    else:
+        deep = len(hyperparameter["hidden_layer_sizes"])
+
+        # determine pkl file and save
+    model_name = f"{path}/{estimator_class}_layer_{deep}.joblib"
     if not os.path.exists(model_name):
         joblib.dump(estimator, model_name)
     elif overwrite:

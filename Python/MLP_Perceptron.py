@@ -10,38 +10,47 @@ from sklearn.neural_network import MLPRegressor, MLPClassifier
 from warnings import simplefilter
 
 
-def main(model_type, hyperparameter=None, data_version="PmitT"):
+def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False):
     """
     main function of NN
     :param model_type: [str],  MLP perceptron model ("Classifier" or "Regressor")
     :param hyperparameter: [dict], result of hyper search
     :param data_version: [str], version of data set
+    :param evaluation: [boolen], determination, whether evaluate the fitting process or not
     """
     # load data set
     input_set, target_set = dataset_reader.merge_data()
 
-    # preprocess for MLP preceptron
     if model_type == "Regressor":
+        # preprocess for MLP preceptron
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
+
+        # training MLP preceptron
+        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter)
+
+        # save model and prediction result
+        parameter_path = f"Model_parameters/{data_version}"
+        Save_model.save_Preceptron(regressor, input_set, target_set, path=parameter_path)
+
+        # evaluate fitting process
+        if evaluation:
+            plot_learning_curve.evaluation_learning_curve(regressor, input_set, target_set,
+                                                          title=f"{hyperparameter['hidden_layer_sizes']}")
+
     elif model_type == "Classifier":
+        # preprocess for MLP preceptron
         input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
 
-    # training MLP preceptron
-    if model_type == "Regressor":
-        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter)
-    elif model_type == "Classifier":
+        # training MLP preceptron
         classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
 
-    # save model and prediction result
-    Parameter_path = f"Model_parameters/{data_version}"
-    Save_model.save_Preceptron(regressor, input_set, target_set, path=Parameter_path)
+        # save model and prediction result
+        parameter_path = f"Model_parameters/{data_version}"
+        Save_model.save_Preceptron(classifier, input_set, target_set, path=parameter_path)
 
-    # # evaluate MLP preceptron
-    # if model_type == "Regressor":
-    #     plot_learning_curve.evaluation_learning_curve(regressor, input_set, target_set,
-    #                                                   title=f"{hyperparameter['hidden_layer_sizes']}")
-    # elif model_type == "Classifier":
-    #     confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
+        # evaluate MLP preceptron
+        if evaluation:
+            confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
 
 
 def optimize(model, deep=3):
@@ -54,26 +63,25 @@ def optimize(model, deep=3):
     # load data set
     input_set, target_set = dataset_reader.merge_data()
 
-    # preprocess for MLP preceptron
     if model == "Regressor":
+        # preprocess for MLP preceptron
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
-    elif model == "Classifier":
-        input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
 
-    # setup a MLP preceptron
-    if model == "Regressor":
+        # setup a MLP preceptron
         regressor = MLPRegressor(solver='lbfgs', random_state=1)
-    elif model == "Classifier":
-        classifier = MLPClassifier(solver='lbfgs', random_state=1)
 
-    # search best hyper parameter
-    if model == "Regressor":
         # implement hyper search
         regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep)
 
         return regressor_search
 
     elif model == "Classifier":
+        # preprocess for MLP preceptron
+        input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
+
+        # setup a MLP preceptron
+        classifier = MLPClassifier(solver='lbfgs', random_state=1)
+
         # implement hyper search
         classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep)
 
@@ -86,13 +94,15 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # define type of Model
-    model_type = "Regressor"
-    # model_type = "Classifier"
+    # model_type = "Regressor"
+    model_type = "Classifier"
 
-    # optimize hyper parameter
-    deep_space = np.linspace(1, 1, num=1)
-    for deep in deep_space:
-        parameter_space = optimize(model_type, deep=deep)
+    # # optimize hyper parameter
+    # deep_space = np.linspace(1, 1, num=1)
+    # for deep in deep_space:
+    #     parameter_space = optimize(model_type, deep=deep)
+    #
+    #     # train MLP
+    #     main(model_type, parameter_space)
 
-        # train MLP
-        main(model_type, parameter_space)
+    main(model_type)
