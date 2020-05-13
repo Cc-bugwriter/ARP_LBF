@@ -26,7 +26,7 @@ Before using MLP Receptron please install those necessary libraries in your loca
 - [scipy] -- 1.2.1
 - [keras] -- 2.2.4
 - [zipfile]
-- [sklearn] -- 0.20.3
+- [sklearn] -- 0.23.0
 - [warnings]
 - [matplotlib]
 - [tensorflow] -- 1.13.1
