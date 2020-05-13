@@ -13,6 +13,8 @@ Version: 1.01
 # MLP Receptron
 MLP Receptron is a Multi-layer artificial intelligence network，which base on python library.
 
+![standard-readme compliant](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/ARP_Programm_Prozess.png)
+
 # Installation
 MLP Receptron depends on a few of popular data science library. 
 Before using MLP Receptron please install those necessary libraries in your local enviroment:
