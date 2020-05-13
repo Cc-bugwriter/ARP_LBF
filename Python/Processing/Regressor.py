@@ -39,7 +39,7 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
         deep = len(hidden_layer_sizes)
     else:
         # update hyper parameter base on hyper search
-        regressor = MLPRegressor(solver='lbfgs')
+        regressor = MLPRegressor(solver='lbfgs', random_state=1)
         regressor.set_params(**hyperparameter)
 
         # assign depth

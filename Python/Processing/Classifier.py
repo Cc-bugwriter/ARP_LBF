@@ -39,7 +39,7 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
         deep = len(hidden_layer_sizes)
     else:
         # update hyper parameter base on hyper search
-        classifier = MLPClassifier(solver='lbfgs')
+        classifier = MLPClassifier(solver='lbfgs', random_state=1)
         classifier.set_params(**hyperparameter)
 
         # assign depth
