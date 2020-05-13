@@ -5,7 +5,7 @@ from Preprocessing import pre_processing, dataset_reader
 from Processing import Regressor, Classifier, Save_model
 from Evaluation import plot_learning_curve
 from Evaluation import confusion_matrix
-from Evaluation import hyper_search
+from Optimation import hyper_search
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from warnings import simplefilter
 
@@ -97,8 +97,8 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # define type of Model
-    model_type = "Regressor"
-    # model_type = "Classifier"
+    # model_type = "Regressor"
+    model_type = "Classifier"
 
     # optimize hyper parameter
     deep_space = np.linspace(1, 1, num=1)
