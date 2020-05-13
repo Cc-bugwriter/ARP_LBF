@@ -92,4 +92,6 @@ all necessary nodes can belong to three blockes:
 - [Classification]
 -- [Classifier.py]
 - [Evaluation]
--- [confusion_matrix.py], [hyper_search.py], [plot_learning_curve.py], [plot_regularization.py]
+-- [confusion_matrix.py], [plot_learning_curve.py], [plot_regularization.py]
+- [Optimation]
+-- [hyper_search.py]
