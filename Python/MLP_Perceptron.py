@@ -7,6 +7,7 @@ from Evaluation import plot_learning_curve
 from Evaluation import confusion_matrix
 from Optimation import hyper_search
 from sklearn.neural_network import MLPRegressor, MLPClassifier
+from sklearn.model_selection import train_test_split
 from warnings import simplefilter
 
 
@@ -29,7 +30,7 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
 
         # training MLP preceptron
-        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter,
+        regressor = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter,
                                                                version=data_version)
 
         # save model and prediction result
@@ -45,7 +46,7 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
         input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
 
         # training MLP preceptron
-        classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
+        classifier = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
 
         # save model and prediction result
         Save_model.save_Preceptron(classifier, input_set, target_set, path=parameter_path)
@@ -70,11 +71,15 @@ def optimize(model, deep=3, data_version="PmitT"):
         # preprocess for MLP preceptron
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
 
+        # split into training and test set
+        X_train, X_test, y_train, y_test = \
+            train_test_split(input_set, target_set, test_size=0.2, random_state=233)
+
         # setup a MLP preceptron
         regressor = MLPRegressor(solver='lbfgs', random_state=1)
 
         # implement hyper search
-        regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep, version=data_version)
+        regressor_search = hyper_search.hyper_search(regressor, X_train, y_train, deep=deep, version=data_version)
 
         return regressor_search
 
@@ -82,11 +87,15 @@ def optimize(model, deep=3, data_version="PmitT"):
         # preprocess for MLP preceptron
         input_set, _, _, target_set, target_name = pre_processing.dataset_preprocess(input_set, target_set)
 
+        # split into training and test set
+        X_train, X_test, y_train, y_test = \
+            train_test_split(input_set, target_set, test_size=0.2, random_state=233)
+
         # setup a MLP preceptron
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
 
         # implement hyper search
-        classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep, version=data_version)
+        classifier_search = hyper_search.hyper_search(classifier, X_train, y_train, deep=deep, version=data_version)
 
         return classifier_search
 
@@ -97,13 +106,16 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # define type of Model
-    # model_type = "Regressor"
-    model_type = "Classifier"
+    model_type = "Regressor"
+    # model_type = "Classifier"
+    #
+    # # optimize hyper parameter
+    # deep_space = np.linspace(1, 1, num=1)
+    # for deep in deep_space:
+    #     parameter_space = optimize(model_type, deep=deep)
+    #
+    #     # train MLP
+    #     main(model_type, parameter_space)
 
-    # optimize hyper parameter
-    deep_space = np.linspace(1, 1, num=1)
-    for deep in deep_space:
-        parameter_space = optimize(model_type, deep=deep)
-
-        # train MLP
-        main(model_type, parameter_space)
+    main(model_type)
+    # full path： "Model_parameters/PmitT/classifier_layer_1.joblib"

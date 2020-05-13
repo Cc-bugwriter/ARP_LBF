@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
 
-def classifier(input_set, target_set, test_size=0.2, random_seed=23,
+def classifier(input_set, target_set, test_size=0.2, random_seed=233,
                alpha=0.00017433288, hidden_layer_sizes=(177, 166, 97), max_iter=3000,
                hyperparameter=None, version="PmitT"):
     """
@@ -66,7 +66,4 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     score = classifier.score(X_test, y_test)
     print('Test Score (Accuracy): %f' % score)
 
-    # compute aWeight matrix
-    weight_matrix = classifier.fit(X_train, y_train).coefs_
-
-    return classifier, score, weight_matrix
+    return classifier

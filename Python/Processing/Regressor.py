@@ -2,6 +2,8 @@ import os
 from Processing import Load_model
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
 
 
 def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed=233,
@@ -67,7 +69,14 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
     score = regressor.score(X_test, y_test)
     print('Test R2 Score: %f' % score)
 
-    # compute aWeight matrix
-    weight_matrix = regressor.fit(X_train, y_train).coefs_
+    # predict training result
+    y_pred = regressor.predict(X_test)
 
-    return regressor, score, weight_matrix
+    # compute and Print other Metrics
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+
+    print('mean absolute error in Test: %f' % mae)
+    print('mean squared error in Test: %f' % mse)
+
+    return regressor
