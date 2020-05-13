@@ -1,3 +1,8 @@
+Version: 1.03
+- optimize main func
+- add data-version argument in main func
+- fix save bug
+----------------------------------------
 Version: 1.02
 - add adaptive hyperparameter search
 - add model save and load function
