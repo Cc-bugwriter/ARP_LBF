@@ -57,3 +57,4 @@ Normale Änderung wie Projekt-name, Prozess und gewünschtes Datum kann einfach 
 - [Gantt Diagramm](https://1drv.ms/x/s!AoFQHZ8wru691GZRtCRijcDHQ6Jp?e=7xtmd6)
 
 ## Usage
+Bitte lesen readme im Unterordner
