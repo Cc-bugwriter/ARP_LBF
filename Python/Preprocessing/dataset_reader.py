@@ -40,15 +40,16 @@ def dataset_reader(path='Data/daten', name='1P1K', type='csv'):
     return input_set, target_set
 
 
-def merge_data():
+def merge_data(data_version="PmitT"):
     """
     merge all data in a couple of data sets
     :return input_set: [narray],  Input data set
     :return target_set: [narray], Target data set
+    :param data_version: [str], version of data set ('P', 'P1K', 'PmitT', e.g.) (default value: "PmitT")
     """
-    input_set, target_set = dataset_reader(name='1PmitT')
+    input_set, target_set = dataset_reader(name=f'1{data_version}')
     for i in range(2, 8):
-        name = f"{i}PmitT"
+        name = f"{i}{data_version}"
         input_append, target_append = dataset_reader(name=name)
         input_set = np.concatenate((input_set, input_append), axis=0)
         target_set = np.concatenate((target_set, target_append), axis=0)

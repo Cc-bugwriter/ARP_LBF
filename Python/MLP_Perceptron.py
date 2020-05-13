@@ -12,24 +12,27 @@ from warnings import simplefilter
 
 def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False):
     """
-    main function of NN
+    main function of MLP
     :param model_type: [str],  MLP perceptron model ("Classifier" or "Regressor")
     :param hyperparameter: [dict], result of hyper search
-    :param data_version: [str], version of data set
-    :param evaluation: [boolen], determination, whether evaluate the fitting process or not
+    :param data_version: [str], version of data set ('P', 'P1K', 'PmitT', e.g.), (default value: "PmitT")
+    :param evaluation: [boolean], determination, whether evaluate the fitting process or not
     """
     # load data set
-    input_set, target_set = dataset_reader.merge_data()
+    input_set, target_set = dataset_reader.merge_data(data_version)
+
+    # assign parameter save and load path
+    parameter_path= f"Model_parameters/{data_version}"
 
     if model_type == "Regressor":
         # preprocess for MLP preceptron
         input_set, _, _ = pre_processing.dataset_preprocess(input_set)
 
         # training MLP preceptron
-        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter)
+        regressor, score, weight_matrix = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter,
+                                                               version=data_version)
 
         # save model and prediction result
-        parameter_path = f"Model_parameters/{data_version}"
         Save_model.save_Preceptron(regressor, input_set, target_set, path=parameter_path)
 
         # evaluate fitting process
@@ -45,7 +48,6 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
         classifier, score, weight_matrix = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
 
         # save model and prediction result
-        parameter_path = f"Model_parameters/{data_version}"
         Save_model.save_Preceptron(classifier, input_set, target_set, path=parameter_path)
 
         # evaluate MLP preceptron
@@ -53,11 +55,12 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
             confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
 
 
-def optimize(model, deep=3):
+def optimize(model, deep=3, data_version="PmitT"):
     """
     optimize function of MLP
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
     :param deep: [int], depth of MLP Network  (default value: 3)
+    :param data_version: [str], version of data set ('P', 'P1K', 'PmitT', e.g.), (default value: "PmitT")
     :return para_space: [dict], MLP Hyper parameter
     """
     # load data set
@@ -71,7 +74,7 @@ def optimize(model, deep=3):
         regressor = MLPRegressor(solver='lbfgs', random_state=1)
 
         # implement hyper search
-        regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep)
+        regressor_search = hyper_search.hyper_search(regressor, input_set, target_set, deep=deep, version=data_version)
 
         return regressor_search
 
@@ -83,7 +86,7 @@ def optimize(model, deep=3):
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
 
         # implement hyper search
-        classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep)
+        classifier_search = hyper_search.hyper_search(classifier, input_set, target_set, deep=deep, version=data_version)
 
         return classifier_search
 
@@ -94,15 +97,13 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # define type of Model
-    # model_type = "Regressor"
-    model_type = "Classifier"
+    model_type = "Regressor"
+    # model_type = "Classifier"
 
-    # # optimize hyper parameter
-    # deep_space = np.linspace(1, 1, num=1)
-    # for deep in deep_space:
-    #     parameter_space = optimize(model_type, deep=deep)
-    #
-    #     # train MLP
-    #     main(model_type, parameter_space)
+    # optimize hyper parameter
+    deep_space = np.linspace(1, 1, num=1)
+    for deep in deep_space:
+        parameter_space = optimize(model_type, deep=deep)
 
-    main(model_type)
+        # train MLP
+        main(model_type, parameter_space)

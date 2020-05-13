@@ -1,10 +1,12 @@
+import os
+from Processing import Load_model
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 
 
 def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed=233,
                hidden_layer_sizes=(46, 29, 26), max_iter=1000,
-               hyperparameter=None):
+               hyperparameter=None, version="PmitT"):
     """
     modeling a MLP Regressor with random split all data set.
     after training print out test score on console.
@@ -17,6 +19,7 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
     :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (46, 29, 26))
     :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 1000)
     :param hyperparameter: [dic], optimal hyper parameter, which comes from hyper search
+    :param version: [str], version of data set, to assign the model path (default value: "PmitT")
 
     :return regressor: [estimator],  MLP Regressor with
     :return score: [float], determination coefficient of test data set
@@ -32,13 +35,33 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
         # MLP Regressor 3 layers (default)
         regressor = MLPRegressor(solver='lbfgs', alpha=alpha,
                                  hidden_layer_sizes=hidden_layer_sizes, random_state=1, max_iter=max_iter)
+        # assign default depth
+        deep = len(hidden_layer_sizes)
     else:
         # update hyper parameter base on hyper search
         regressor = MLPRegressor(solver='lbfgs')
         regressor.set_params(**hyperparameter)
 
-    # fit Regressor to the training data
-    regressor.fit(X_train, y_train)
+        # assign depth
+        # make sure that 1 layer MLP could also have depth
+        try:
+            len(hyperparameter["hidden_layer_sizes"])
+        except TypeError:
+            deep = 1
+        else:
+            deep = len(hyperparameter["hidden_layer_sizes"])
+
+    # assign saved model path
+    model_path = f"Model_parameters/{version}/regressor_layer_{deep}.joblib"
+    print(model_path)
+
+    # check whether a trained model exists
+    if os.path.exists(model_path) and hyperparameter is None:
+        # if exists a trained model, direct load
+        regressor = Load_model.load_Preceptron(target_set, path=f"Model_parameters/{version}", deep=deep)
+    else:
+        # fit Regressor to the training data
+        regressor.fit(X_train, y_train)
 
     # compute and Print R2 Metrics
     score = regressor.score(X_test, y_test)

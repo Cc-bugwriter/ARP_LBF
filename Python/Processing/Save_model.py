@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 from sklearn.externals import joblib
 
@@ -11,8 +12,7 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
     :param input_set: [narray],  Input data set, use to predict result
     :param target_set: [narray],  Target data set, use to determine estimator class
     :param path: [str],  saving path
-    :param name: [str],  model name
-    :param overwrite: [boolen],  whether overwrite existed model and prediction result
+    :param overwrite: [boolean],  whether overwrite existed model and prediction result
     """
     # determine estimator class
     try:
@@ -37,7 +37,7 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
     else:
         deep = len(hyperparameter["hidden_layer_sizes"])
 
-        # determine pkl file and save
+    # determine joblib file and save
     model_name = f"{path}/{estimator_class}_layer_{deep}.joblib"
     if not os.path.exists(model_name):
         joblib.dump(estimator, model_name)
@@ -50,10 +50,11 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
 
     # determine csv file and save
     prediction_name = f"{path}/{estimator_class}_layer_{deep}.csv"
-    if not os.path.exists(model_name):
+    if not os.path.exists(prediction_name):
         MLP_prediction_df.to_csv(prediction_name)
     elif overwrite:
         MLP_prediction_df.to_csv(prediction_name)
 
     print("estimator class: {}".format(estimator_class))
-    print("model and prediction result saved at {}".format(path))
+    print("data version: {}".format(re.search(r'(?<=/)\w+', model_name).group(0)))
+    print("model and prediction result save at {} successfully".format(path))
