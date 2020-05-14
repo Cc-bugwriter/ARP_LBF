@@ -33,8 +33,12 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
         regressor = Regressor.regression(input_set, target_set, hyperparameter=hyperparameter,
                                                                version=data_version)
 
+        # split into training and test set
+        X_train, X_test, y_train, y_test = \
+            train_test_split(input_set, target_set, test_size=0.2, random_state=23)
+
         # save model and prediction result
-        Save_model.save_Preceptron(regressor, input_set, target_set, path=parameter_path)
+        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path, overwrite=True)
 
         # evaluate fitting process
         if evaluation:
@@ -89,7 +93,7 @@ def optimize(model, deep=3, data_version="PmitT"):
 
         # split into training and test set
         X_train, X_test, y_train, y_test = \
-            train_test_split(input_set, target_set, test_size=0.2, random_state=233)
+            train_test_split(input_set, target_set, test_size=0.2, random_state=23)
 
         # setup a MLP preceptron
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
@@ -109,13 +113,12 @@ if __name__ == '__main__':
     model_type = "Regressor"
     # model_type = "Classifier"
     #
-    # # optimize hyper parameter
-    # deep_space = np.linspace(1, 1, num=1)
-    # for deep in deep_space:
-    #     parameter_space = optimize(model_type, deep=deep)
-    #
-    #     # train MLP
-    #     main(model_type, parameter_space)
+    # optimize hyper parameter
+    deep_space = np.linspace(1, 3, num=3)
+    for deep in deep_space:
+        parameter_space = optimize(model_type, deep=int(deep))
 
-    main(model_type)
+        # train MLP
+        main(model_type, parameter_space)
+
     # full path： "Model_parameters/PmitT/classifier_layer_1.joblib"
