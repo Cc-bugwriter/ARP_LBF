@@ -1,7 +1,7 @@
 import os
 import re
 import pandas as pd
-from sklearn.externals import joblib
+import joblib
 
 
 def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):

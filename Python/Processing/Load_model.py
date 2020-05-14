@@ -1,4 +1,4 @@
-from sklearn.externals import joblib
+import joblib
 
 
 def load_Preceptron(target_set, path, deep=3):

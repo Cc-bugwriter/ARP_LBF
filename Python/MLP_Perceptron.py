@@ -113,12 +113,13 @@ if __name__ == '__main__':
     model_type = "Regressor"
     # model_type = "Classifier"
     #
-    # optimize hyper parameter
-    deep_space = np.linspace(1, 3, num=3)
-    for deep in deep_space:
-        parameter_space = optimize(model_type, deep=int(deep))
+    # # optimize hyper parameter
+    # deep_space = np.linspace(1, 3, num=3)
+    # for deep in deep_space:
+    #     parameter_space = optimize(model_type, deep=int(deep))
+    #
+    #     # train MLP
+    #     main(model_type, parameter_space)
 
-        # train MLP
-        main(model_type, parameter_space)
-
+    main(model_type)
     # full path： "Model_parameters/PmitT/classifier_layer_1.joblib"
