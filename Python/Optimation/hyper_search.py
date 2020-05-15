@@ -7,7 +7,7 @@ from Processing import Load_model
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 
-def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, version="PmitT"):
+def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, version="version_4"):
     """
     evaluate determination coefficient of variable regularisation coefficient,
     find the best result and visualize evaluation process
@@ -17,7 +17,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, ver
     :param target_set: [narray],  Target data set
     :param deep: [int],  the number of layer width (default value: 3)
     :param random_mode: [boolean],  choose to random search or grid search (default value: True)
-    :param version: [str], version of data set, to assign the model path (default value: "PmitT")
+    :param version: [str], version of data set, to assign the model path (default value: "version_4")
     """
     # find the lease common multiple, which base on the number of input's and target's feature
     try:

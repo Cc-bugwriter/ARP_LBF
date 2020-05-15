@@ -6,8 +6,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_absolute_error
 
 
-def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed=233,
-               hidden_layer_sizes=(46, 29, 26), max_iter=1000,
+def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed=233,
+               hidden_layer_sizes=(53, 26, 25), max_iter=4700,
                hyperparameter=None, version="PmitT"):
     """
     modeling a MLP Regressor with random split all data set.
@@ -17,7 +17,7 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
     :param target_set: [narray],  Target of Training Network
     :param test_size: [float], the proportion of test data in all data set (default value : 0.2)
     :param random_seed: [int], the random seed of random split for data set (default value : 233)
-    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 1.3738e-4,)
+    :param alpha: [float], regularisation coefficient in MLP Regressor (default value : 4.175e-05)
     :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (46, 29, 26))
     :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 1000)
     :param hyperparameter: [dic], optimal hyper parameter, which comes from hyper search
@@ -72,11 +72,16 @@ def regression(input_set, target_set, alpha=1.3738e-4, test_size=0.2,random_seed
     # predict training result
     y_pred = regressor.predict(X_test)
 
+    # assign name space
+    name_space = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
+
     # compute and Print other Metrics
     for i in range(y_test.shape[1]):
         mae = mean_absolute_error(y_test[:, i], y_pred[:, i])
 
-        print('mean absolute error in Test: %f' % mae)
-        print('normal mean absolute error: %f in percent' %(100*mae/np.mean(y_pred[:, i])))
+        print('%s mean absolute error in Test: %f' % (name_space[i], mae))
+        print('%s normal mean absolute error: %f in percent' % (name_space[i], 100*mae/np.mean(y_pred[:, i])))
+
+    print("")
 
     return regressor

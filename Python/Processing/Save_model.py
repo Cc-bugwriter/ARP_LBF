@@ -55,6 +55,17 @@ def save_Preceptron(estimator, input_set, target_set, path, overwrite=False):
     elif overwrite:
         MLP_prediction_df.to_csv(prediction_name)
 
+    # assign target Dataframe
+    MLP_target = pd.DataFrame.from_dict(target_set)
+
+    # determine csv file and save
+    target_name = f"{path}/{estimator_class}_target.csv"
+    if not os.path.exists(target_name):
+        MLP_target.to_csv(target_name)
+    elif overwrite:
+        MLP_target.to_csv(target_name)
+
+
     print("estimator class: {}".format(estimator_class))
     print("data version: {}".format(re.search(r'(?<=/)\w+', model_name).group(0)))
     print("model and prediction result save at {} successfully".format(path))

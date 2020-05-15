@@ -11,12 +11,13 @@ from sklearn.model_selection import train_test_split
 from warnings import simplefilter
 
 
-def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False):
+def main(model_type, hyperparameter=None, data_version="version_4", evaluation=False):
     """
     main function of MLP
     :param model_type: [str],  MLP perceptron model ("Classifier" or "Regressor")
     :param hyperparameter: [dict], result of hyper search
-    :param data_version: [str], version of data set ('P', 'P1K', 'PmitT', e.g.), (default value: "PmitT")
+    :param data_version: [str], version of data set ('version_1', 'version_2', 'version_3', e.g.),
+    (default value: "version_4")
     :param evaluation: [boolean], determination, whether evaluate the fitting process or not
     """
     # load data set
@@ -34,15 +35,15 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
                                                                version=data_version)
 
         # split into training and test set
-        X_train, X_test, y_train, y_test = \
+        _, X_test, _, y_test = \
             train_test_split(input_set, target_set, test_size=0.2, random_state=23)
 
         # save model and prediction result
-        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path, overwrite=True)
+        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path)
 
         # evaluate fitting process
         if evaluation:
-            plot_learning_curve.evaluation_learning_curve(regressor, input_set, target_set,
+            plot_learning_curve.evaluation_learning_curve(regressor, X_test, y_test,
                                                           title=f"{hyperparameter['hidden_layer_sizes']}")
 
     elif model_type == "Classifier":
@@ -52,24 +53,29 @@ def main(model_type, hyperparameter=None, data_version="PmitT", evaluation=False
         # training MLP preceptron
         classifier = Classifier.classifier(input_set, target_set, hyperparameter=hyperparameter)
 
+        # split into training and test set
+        _, X_test, _, y_test = \
+            train_test_split(input_set, target_set, test_size=0.2, random_state=23)
+
         # save model and prediction result
-        Save_model.save_Preceptron(classifier, input_set, target_set, path=parameter_path)
+        Save_model.save_Preceptron(classifier, X_test, y_test, path=parameter_path)
 
         # evaluate MLP preceptron
         if evaluation:
-            confusion_matrix.confusion_matrix(classifier, input_set, target_set, target_name)
+            confusion_matrix.confusion_matrix(classifier, X_test, y_test, target_name)
 
 
-def optimize(model, deep=3, data_version="PmitT"):
+def optimize(model, deep=3, data_version="version_4"):
     """
     optimize function of MLP
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
     :param deep: [int], depth of MLP Network  (default value: 3)
-    :param data_version: [str], version of data set ('P', 'P1K', 'PmitT', e.g.), (default value: "PmitT")
+    :param data_version: [str], version of data set ('version_1', 'version_2', 'version_3', e.g.),
+     (default value: "version_4")
     :return para_space: [dict], MLP Hyper parameter
     """
     # load data set
-    input_set, target_set = dataset_reader.merge_data()
+    input_set, target_set = dataset_reader.merge_data(data_version=data_version)
 
     if model == "Regressor":
         # preprocess for MLP preceptron
@@ -113,13 +119,19 @@ if __name__ == '__main__':
     model_type = "Regressor"
     # model_type = "Classifier"
     #
-    # # optimize hyper parameter
-    # deep_space = np.linspace(1, 3, num=3)
-    # for deep in deep_space:
-    #     parameter_space = optimize(model_type, deep=int(deep))
-    #
-    #     # train MLP
-    #     main(model_type, parameter_space)
+    # optimize hyper parameter
+    deep_space = np.linspace(1, 3, num=3)
+    for deep in deep_space:
+        parameter_space = optimize(model_type, deep=int(deep))
 
-    main(model_type)
-    # full path： "Model_parameters/PmitT/classifier_layer_1.joblib"
+        # train MLP
+        main(model_type, parameter_space)
+
+    # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
+    model_type = "Classifier"
+    deep_space = np.linspace(1, 1, num=1)
+    for deep in deep_space:
+        parameter_space = optimize(model_type, deep=int(deep))
+
+        # train MLP
+        main(model_type, parameter_space)
