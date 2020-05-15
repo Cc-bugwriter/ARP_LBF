@@ -38,7 +38,7 @@ def main(model_type, hyperparameter=None, data_version="version_4", evaluation=F
             train_test_split(input_set, target_set, test_size=0.2, random_state=233)
 
         # save model and prediction result
-        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path, overwrite=True)
+        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path)#, overwrite=True)
 
         # evaluate fitting process
         if evaluation:
@@ -115,16 +115,16 @@ if __name__ == '__main__':
     simplefilter(action='ignore', category=FutureWarning)
 
     # define type of Model
-    # model_type = "Regressor"
-    model_type = "Classifier"
+    model_type = "Regressor"
+    # model_type = "Classifier"
 
     # optimize hyper parameter
-    # deep_space = np.linspace(1, 3, num=3)
-    # for deep in deep_space:
-    #     parameter_space = optimize(model_type, deep=int(deep))
-    #
-    #     # train MLP
-    #     main(model_type, parameter_space)
+    deep_space = np.linspace(1, 3, num=3)
+    for deep in deep_space:
+        parameter_space = optimize(model_type, deep=int(deep))
+
+        # train MLP
+        main(model_type, parameter_space)
 
     # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
     # model_type = "Classifier"

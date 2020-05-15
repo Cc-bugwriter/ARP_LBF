@@ -81,7 +81,7 @@ def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed
         mae = mean_absolute_error(y_test[:, i], y_pred[:, i])
 
         print('%s mean absolute error in Test: %f' % (name_space[i], mae))
-        print('%s normal mean absolute error: %f in percent' % (name_space[i], 100*mae/np.mean(y_pred[:, i])))
+        print('%s normal mean absolute error: %f in percent' % (name_space[i], 100*mae/np.ptp(y_pred[:, i])))
 
     print("")
 
