@@ -2,12 +2,14 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import add_dummy_feature
 
-def dataset_reader(path='Data', data_version='version_4', name='1P_iv', type='csv'):
+
+def dataset_reader(path='Data', data_version='version_4', name='1P', type='csv'):
     """
     read the data set
     and return Input and Target of Training Network
-    :param path: [str], the path of csv data (default value : 'Data/version_4')
-    :param name: [str], data to import ('1P' ,'1P1K' or '1PmitT', e.g.) (default value : '1P_iv')
+    :param path: [str], the path of csv data (default value : 'Data')
+    :param data_version: [str], the version of csv data (default value : 'version_4')
+    :param name: [str], data to import ('1P' ,'1P1K' or '1PmitT', e.g.) (default value : '1P')
     :param type: [str], data type (default value : 'csv')
     :return input_set: [narray],  Input data set
     :return target_set: [narray], Target data set
@@ -51,7 +53,7 @@ def merge_data(data_version="version_4"):
     (default value: "version_4")
     """
     # define version list
-    version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT', "version_4": 'P_iv'}
+    version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT', "version_4": 'P'}
     # assign data name from version
     data_name = version_list[data_version]
 

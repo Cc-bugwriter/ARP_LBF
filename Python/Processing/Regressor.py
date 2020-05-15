@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import time
 from Processing import Load_model
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
@@ -8,7 +9,7 @@ from sklearn.metrics import mean_absolute_error
 
 def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed=233,
                hidden_layer_sizes=(53, 26, 25), max_iter=4700,
-               hyperparameter=None, version="PmitT"):
+               hyperparameter=None, version="version_4"):
     """
     modeling a MLP Regressor with random split all data set.
     after training print out test score on console.
@@ -21,7 +22,7 @@ def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed
     :param hidden_layer_sizes: [tuple of int], structural hyperparameter in MLP Regressor (default value : (46, 29, 26))
     :param max_iter: [int], maximal iteration epoch in MLP Regressor (default value : 1000)
     :param hyperparameter: [dic], optimal hyper parameter, which comes from hyper search
-    :param version: [str], version of data set, to assign the model path (default value: "PmitT")
+    :param version: [str], version of data set, to assign the model path (default value: "version_4")
 
     :return regressor: [estimator],  MLP Regressor with
     :return score: [float], determination coefficient of test data set

@@ -70,12 +70,12 @@ def dataset_preprocess(input_set, target_set=None):
         # convert boolen to int
         target_set = target_set.astype(int)
 
-        # convert [5*1] array to [1*1] float
+        # convert [5*1] array to [1*1] float  [labeling]
         for i in range(target_set.shape[1]):
             target_set[:, i] = target_set[:, i] * 10 ** i
         target_set = np.sum(target_set, axis=1, dtype=int)
 
-        # convert [1*1] float to str
+        # convert [1*1] float to str [labeling]
         target_set_list = target_set.tolist()
 
         target_name = []
