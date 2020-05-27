@@ -63,10 +63,7 @@ def merge_data(data_version="version_4"):
 
     input_set, target_set = dataset_reader(data_version=data_version, name=f'1{data_name}')
 
-    if data_version == "version_5":
-        data_len = 2
-    else:
-        data_len = 8
+    data_len = 8
 
     for i in range(2, data_len):
         name = f"{i}{data_name}"
