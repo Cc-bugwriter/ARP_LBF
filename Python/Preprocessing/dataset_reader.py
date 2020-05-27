@@ -34,6 +34,9 @@ def dataset_reader(path='Data', data_version='version_4', name='1P', type='csv')
     elif data_version == "version_4":
         label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
         label_x.append('Tem')
+    elif data_version == "version_5":
+        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
+        label_x.append('Tem')
 
     input_set = df[label_x].values
     target_set = df[label_y].values
@@ -53,12 +56,19 @@ def merge_data(data_version="version_4"):
     (default value: "version_4")
     """
     # define version list
-    version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT', "version_4": 'P'}
+    version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT',
+                    "version_4": 'P', "version_5": 'P_gerundet'}
     # assign data name from version
     data_name = version_list[data_version]
 
     input_set, target_set = dataset_reader(data_version=data_version, name=f'1{data_name}')
-    for i in range(2, 8):
+
+    if data_version == "version_5":
+        data_len = 2
+    else:
+        data_len = 8
+
+    for i in range(2, data_len):
         name = f"{i}{data_name}"
         input_append, target_append = dataset_reader(data_version=data_version, name=name)
         input_set = np.concatenate((input_set, input_append), axis=0)
