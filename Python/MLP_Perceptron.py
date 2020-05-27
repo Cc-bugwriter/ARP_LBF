@@ -38,12 +38,12 @@ def main(model_type, hyperparameter=None, data_version="version_5", evaluation=F
             train_test_split(input_set, target_set, test_size=0.2, random_state=233)
 
         # save model and prediction result
-        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path, overwrite=True)
+        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path) #, overwrite=True)
 
         # evaluate fitting process
         if evaluation:
             plot_learning_curve.evaluation_learning_curve(regressor, X_test, y_test,
-                                                          title=f"{hyperparameter['hidden_layer_sizes']}")
+                                                          title=f"{regressor.get_params()['hidden_layer_sizes']}")
 
     elif model_type == "Classifier":
         # preprocess for MLP preceptron
@@ -87,8 +87,12 @@ def optimize(model, deep=3, data_version="version_5"):
         # setup a MLP preceptron
         regressor = MLPRegressor(solver='lbfgs', random_state=1)
 
+        # split into training and test set
+        _, X_del, _, y_del = \
+            train_test_split(X_train, y_train, test_size=0.3, random_state=233)
+
         # implement hyper search
-        regressor_search = hyper_search.hyper_search(regressor, X_train, y_train, deep=deep, version=data_version)
+        regressor_search = hyper_search.hyper_search(regressor, X_del, y_del, deep=deep, version=data_version)
 
         return regressor_search
 
@@ -103,8 +107,12 @@ def optimize(model, deep=3, data_version="version_5"):
         # setup a MLP preceptron
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
 
+        # split development set from training set
+        _, X_del, _, y_del = \
+            train_test_split(X_train, y_train, test_size=0.3, random_state=23)
+
         # implement hyper search
-        classifier_search = hyper_search.hyper_search(classifier, X_train, y_train, deep=deep, version=data_version)
+        classifier_search = hyper_search.hyper_search(classifier, X_del, y_del, deep=deep, version=data_version)
 
         return classifier_search
 
@@ -122,9 +130,10 @@ if __name__ == '__main__':
     deep_space = np.linspace(1, 3, num=3)
     for deep in deep_space:
         parameter_space = optimize(model_type, deep=int(deep))
-
         # train MLP
         main(model_type, parameter_space)
+        if deep == 3:
+            main(model_type, evaluation=True)
 
     # # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
     # model_type = "Classifier"

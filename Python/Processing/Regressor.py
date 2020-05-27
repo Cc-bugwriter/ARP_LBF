@@ -33,6 +33,10 @@ def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed
     X_train, X_test, y_train, y_test = \
         train_test_split(input_set, target_set, test_size=test_size, random_state=random_seed)
 
+    # split into training set with development set
+    X_train, _, y_train, _ = \
+        train_test_split(X_train, y_train, test_size=0.3, random_state=random_seed)
+
     # setup a MLP Regressor
     if hyperparameter is None:
         # MLP Regressor 3 layers (default)
