@@ -133,7 +133,7 @@ if __name__ == '__main__':
         # train MLP
         main(model_type, parameter_space)
         if deep == 3:
-            main(model_type, evaluation=True)
+            main(model_type, parameter_space, evaluation=True)
 
     # # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
     # model_type = "Classifier"
