@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from warnings import simplefilter
 
 
-def main(model_type, hyperparameter=None, data_version="version_5", evaluation=False):
+def main(model_type, hyperparameter=None, data_version="version_6", evaluation=False):
     """
     main function of MLP
     :param model_type: [str],  MLP perceptron model ("Classifier" or "Regressor")
@@ -38,7 +38,7 @@ def main(model_type, hyperparameter=None, data_version="version_5", evaluation=F
             train_test_split(input_set, target_set, test_size=0.2, random_state=233)
 
         # save model and prediction result
-        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path) #, overwrite=True)
+        Save_model.save_Preceptron(regressor, X_test, y_test, path=parameter_path, overwrite=True)
 
         # evaluate fitting process
         if evaluation:
@@ -64,7 +64,7 @@ def main(model_type, hyperparameter=None, data_version="version_5", evaluation=F
             confusion_matrix.confusion_matrix(classifier, X_test, y_test, target_name)
 
 
-def optimize(model, deep=3, data_version="version_5"):
+def optimize(model, deep=3, data_version="version_6"):
     """
     optimize function of MLP
     :param model: [str],  MLP perceptron model ("Classifier" or "Regressor")
@@ -133,7 +133,7 @@ if __name__ == '__main__':
         # train MLP
         main(model_type, parameter_space)
         if deep == 3:
-            main(model_type, parameter_space, evaluation=True)
+            main(model_type, parameter_space)  #, evaluation=True)
 
     # # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
     # model_type = "Classifier"
