@@ -52,12 +52,12 @@ def dataset_preprocess(input_set, target_set=None):
     :return input_std: [narray],  regularization standard deviation
     :return input_mean: [narray],  regularization mean
     """
-    # regularization Input
-    input_set = preprocessing.scale(input_set)
-
     # compute feature scaling parameter
     input_std = np.std(input_set, ddof=0)  # standard deviation with bias (column)
     input_mean = input_set.mean(0)  # mean (column)
+
+    # regularization Input
+    input_set = preprocessing.scale(input_set)
 
     # assign binary mask to Target classification
     if target_set is not None:

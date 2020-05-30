@@ -21,7 +21,7 @@ def main(model_type, hyperparameter=None, data_version="version_6", evaluation=F
     :param evaluation: [boolean], determination, whether evaluate the fitting process or not
     """
     # load data set
-    input_set, target_set = dataset_reader.merge_data(data_version)
+    input_set, target_set = dataset_reader.merge_data(data_version, first_loc=1, end_loc=3)
 
     # assign parameter save and load path
     parameter_path = f"Model_parameters/{data_version}"
@@ -124,16 +124,16 @@ if __name__ == '__main__':
 
     # define type of Model
     model_type = "Regressor"
-    # model_type = "Classifier"
+    main(model_type, data_version="version_6")
 
-    # optimize hyper parameter
-    deep_space = np.linspace(1, 3, num=3)
-    for deep in deep_space:
-        parameter_space = optimize(model_type, deep=int(deep))
-        # train MLP
-        main(model_type, parameter_space)
-        if deep == 3:
-            main(model_type, parameter_space)  #, evaluation=True)
+    # # optimize hyper parameter
+    # deep_space = np.linspace(3, 3, num=1)
+    # for deep in deep_space:
+    #     parameter_space = optimize(model_type, deep=int(deep))
+    #     # train MLP
+    #     main(model_type, parameter_space)
+    #     if deep == 3:
+    #         main(model_type, parameter_space)  #, evaluation=True)
 
     # # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
     # model_type = "Classifier"

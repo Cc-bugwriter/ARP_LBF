@@ -50,13 +50,15 @@ def dataset_reader(path='Data', data_version='version_6', name='1P', type='csv')
     return input_set, target_set
 
 
-def merge_data(data_version="version_6"):
+def merge_data(data_version="version_6", first_loc=1, end_loc=7):
     """
     merge all data in a couple of data sets
-    :return input_set: [narray],  Input data set
-    :return target_set: [narray], Target data set
     :param data_version: [str], version of data set ('version_1', 'version_2', 'version_3', e.g.)
     (default value: "version_5")
+    :param first_loc:  [int], first data set index (default value: 1)
+    :param end_loc:  [int], end data set index (default value: 7)
+    :return input_set: [narray],  Input data set
+    :return target_set: [narray], Target data set
     """
     # define version list
     version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT',
@@ -64,11 +66,11 @@ def merge_data(data_version="version_6"):
     # assign data name from version
     data_name = version_list[data_version]
 
-    input_set, target_set = dataset_reader(data_version=data_version, name=f'1{data_name}')
+    input_set, target_set = dataset_reader(data_version=data_version, name=f'{first_loc}{data_name}')
 
-    data_len = 8
+    data_len = end_loc+1
 
-    for i in range(2, data_len):
+    for i in range(first_loc, data_len):
         name = f"{i}{data_name}"
         input_append, target_append = dataset_reader(data_version=data_version, name=name)
         input_set = np.concatenate((input_set, input_append), axis=0)
