@@ -70,7 +70,7 @@ def merge_data(data_version="version_6", first_loc=1, end_loc=7):
 
     data_len = end_loc+1
 
-    for i in range(first_loc, data_len):
+    for i in range(first_loc+1, data_len):
         name = f"{i}{data_name}"
         input_append, target_append = dataset_reader(data_version=data_version, name=name)
         input_set = np.concatenate((input_set, input_append), axis=0)
