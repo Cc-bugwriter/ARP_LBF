@@ -2,13 +2,11 @@ import os
 import numpy as np
 import time
 from Processing import Load_model
-from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_absolute_error
 
 
-def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed=233,
-               hidden_layer_sizes=(53, 26, 25), max_iter=4700,
+def regression(X_train, y_train, X_test, y_test, alpha=4.175e-05, hidden_layer_sizes=(53, 26, 25), max_iter=4700,
                hyperparameter=None, version="version_4"):
     """
     modeling a MLP Regressor with random split all data set.
@@ -28,14 +26,6 @@ def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed
     :return score: [float], determination coefficient of test data set
     :return weight_matrix: [narray], weight matrix of training data set
     """
-
-    # split into training and test set
-    X_train, X_test, y_train, y_test = \
-        train_test_split(input_set, target_set, test_size=test_size, random_state=random_seed)
-
-    # split into training set with development set
-    X_train, _, y_train, _ = \
-        train_test_split(X_train, y_train, test_size=0.3, random_state=random_seed)
 
     # setup a MLP Regressor
     if hyperparameter is None:
@@ -65,7 +55,7 @@ def regression(input_set, target_set, alpha=4.175e-05, test_size=0.2,random_seed
     # check whether a trained model exists
     if os.path.exists(model_path) and hyperparameter is None:
         # if exists a trained model, direct load
-        regressor = Load_model.load_Preceptron(target_set, path=f"Model_parameters/{version}", deep=deep)
+        regressor = Load_model.load_Preceptron(y_train, path=f"Model_parameters/{version}", deep=deep)
     else:
         # fit Regressor to the training data
         regressor.fit(X_train, y_train)

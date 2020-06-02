@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
 
-def classifier(input_set, target_set, test_size=0.2, random_seed=23,
+def classifier(X_train, y_train, X_test, y_test,
                alpha=0.00017433288, hidden_layer_sizes=(177, 166, 97), max_iter=3000,
                hyperparameter=None, version="PmitT"):
     """
@@ -25,15 +25,6 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     :return score: [float], accuracy of test data set
     :return weight_matrix: [narray], weight matrix of training data set
     """
-
-    # split into training and test set
-    X_train, X_test, y_train, y_test = \
-        train_test_split(input_set, target_set, test_size=test_size, random_state=random_seed)
-
-    # split into training set with development set
-    X_train, _, y_train, _ = \
-        train_test_split(X_train, y_train, test_size=0.3, random_state=random_seed)
-
     # setup a MLP Classifier
     if hyperparameter is None:
         # MLP Classifier 3 layers (default)
@@ -61,7 +52,7 @@ def classifier(input_set, target_set, test_size=0.2, random_seed=23,
     # check whether a trained model exists
     if os.path.exists(model_path) and hyperparameter is None:
         # if exists a trained model, direct load
-        classifier = Load_model.load_Preceptron(target_set, path=f"Model_parameters/{version}", deep=deep)
+        classifier = Load_model.load_Preceptron(y_train, path=f"Model_parameters/{version}", deep=deep)
     else:
         # fit Regressor to the training data
         classifier.fit(X_train, y_train)
