@@ -100,10 +100,10 @@ def optimize(model, deep=3, data_version="version_6", first_loc=1, end_loc=7):
 if __name__ == '__main__':
     # parameter space (control)
     first_loc = 1
-    end_loc = 7
+    end_loc = 1
     data_version = "version_6"
     evaluation = False
-    opt = True
+    opt = False
 
     # define type of Model
     model_type = "Regressor"
