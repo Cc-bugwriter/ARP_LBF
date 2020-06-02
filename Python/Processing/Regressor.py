@@ -57,8 +57,14 @@ def regression(X_train, y_train, X_test, y_test, alpha=4.175e-05, hidden_layer_s
         # if exists a trained model, direct load
         regressor = Load_model.load_Preceptron(y_train, path=f"Model_parameters/{version}", deep=deep)
     else:
+        # timer start
+        time_start = time.time()
         # fit Regressor to the training data
         regressor.fit(X_train, y_train)
+        # timer end
+        time_end = time.time()
+        # print fitting time
+        print('fitting time cost', time_end - time_start, 's')
 
     # compute and Print R2 Metrics
     score = regressor.score(X_test, y_test)

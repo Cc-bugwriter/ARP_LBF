@@ -5,6 +5,7 @@ import zipfile
 import os
 from Processing import Load_model
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+import time
 
 
 def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, version="version_4"):
@@ -19,6 +20,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, ver
     :param random_mode: [boolean],  choose to random search or grid search (default value: True)
     :param version: [str], version of data set, to assign the model path (default value: "version_4")
     """
+    # timer start
+    time_start = time.time()
+
     # find the lease common multiple, which base on the number of input's and target's feature
     try:
         target_set.shape[1]
@@ -128,6 +132,11 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, ver
     # reprot result of grid search
     search_result = hyper_search.cv_results_
     report_search(search_result)
+
+    # timer end
+    time_end = time.time()
+    # print searching time
+    print('searching time cost', time_end - time_start, 's')
 
     candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
     candidate = candidates[0]
