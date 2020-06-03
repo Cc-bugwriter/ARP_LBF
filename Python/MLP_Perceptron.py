@@ -65,8 +65,6 @@ def optimize(model, deep=3, data_version="version_6", first_loc=1, end_loc=7):
      (default value: "version_6")
     :param first_loc:  [int], first data set index (default value: 1)
     :param end_loc:  [int], end data set index (default value: 7)
-    :param first_loc:  [int], first data set index (default value: 1)
-    :param end_loc:  [int], end data set index (default value: 7)
 
     :return para_space: [dict], MLP Hyper parameter
     """
@@ -100,10 +98,10 @@ def optimize(model, deep=3, data_version="version_6", first_loc=1, end_loc=7):
 if __name__ == '__main__':
     # parameter space (control)
     first_loc = 1
-    end_loc = 1
+    end_loc = 7
     data_version = "version_6"
     evaluation = False
-    opt = False
+    opt = True
 
     # define type of Model
     model_type = "Regressor"
@@ -113,12 +111,11 @@ if __name__ == '__main__':
         main(model_type, data_version="version_6", evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
     else:
         # optimize hyper parameter
-        deep_space = np.linspace(1, 3, num=1)
+        deep_space = np.linspace(3, 3, num=1)
         for deep in deep_space:
             parameter_space = optimize(model_type, deep=int(deep))
-            # train MLP
-            main(model_type, parameter_space)
             if deep == 3:
-                main(model_type, parameter_space, evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
+                main(model_type, parameter_space, data_version="version_6",
+                     evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
 
     # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"

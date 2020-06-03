@@ -123,7 +123,7 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, ver
 
     # run hyper parameter search
     if random_mode:
-        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space, n_jobs=-1)
+        hyper_search = RandomizedSearchCV(estimator, param_distributions=param_space, n_jobs=-1, n_iter=50)
     else:
         hyper_search = GridSearchCV(estimator, param_grid=param_space, n_jobs=-1)
 
@@ -137,6 +137,9 @@ def hyper_search(estimator, input_set, target_set, deep=3, random_mode=True, ver
     time_end = time.time()
     # print searching time
     print('searching time cost', time_end - time_start, 's')
+
+    # print number of searched candidate
+    print('length of candidate : %f' % len(search_result['rank_test_score']))
 
     candidates = np.flatnonzero(search_result['rank_test_score'] == 1)
     candidate = candidates[0]
