@@ -37,7 +37,7 @@ def main(model_type, hyperparameter=None, data_version="version_6", evaluation=F
 
         # evaluate fitting process
         if evaluation:
-            plot_learning_curve.evaluation_learning_curve(regressor, X_del, y_del,
+            plot_learning_curve.evaluation_learning_curve(regressor, X_train, y_train,
                                                           title=f"{regressor.get_params()['hidden_layer_sizes']}")
 
     elif model_type == "Classifier":
@@ -100,8 +100,8 @@ if __name__ == '__main__':
     first_loc = 1
     end_loc = 7
     data_version = "version_6"
-    evaluation = False
-    opt = True
+    evaluation = True
+    opt = False
 
     # define type of Model
     model_type = "Regressor"

@@ -154,6 +154,6 @@ def evaluation_learning_curve(estimator, input_set, target_set,
 
     # recall function
     plot_learning_curve(estimator, title, input_set, target_set,
-                            cv=cv, ylim=(0., 1.01), n_jobs=-1, train_sizes=train_sizes)
+                            cv=cv, ylim=(0.73, 1.01), n_jobs=-1, train_sizes=train_sizes)
     plt.show()
     plt.savefig('Model_parameters/version_6/LearningCurve.pdf')
