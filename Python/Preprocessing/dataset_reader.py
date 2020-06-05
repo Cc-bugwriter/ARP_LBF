@@ -28,16 +28,7 @@ def dataset_reader(path='Data', data_version='version_6', name='1P', type='csv')
         label_y = ['m2', 'm3', 'm4', 'k5', 'k6', 'alpha', 'beta']
     elif data_version == "version_2":
         label_y = ['m2', 'm3', 'm4', 'k5plusk6', 'alpha', 'beta']
-    elif data_version == "version_3":
-        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
-        label_x.append('Tem')
-    elif data_version == "version_4":
-        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
-        label_x.append('Tem')
-    elif data_version == "version_5":
-        label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
-        label_x.append('Tem')
-    elif data_version == "version_6":
+    else:
         label_y = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
         label_x.append('Tem')
 
@@ -62,7 +53,8 @@ def merge_data(data_version="version_6", first_loc=1, end_loc=7):
     """
     # define version list
     version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT',
-                    "version_4": 'P', "version_5": 'P_gerundet', "version_6": 'P'}
+                    "version_4": 'P', "version_5": 'P_gerundet', "version_6": 'P',
+                    "version_7": '_rauschen'}
     # assign data name from version
     data_name = version_list[data_version]
 

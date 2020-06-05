@@ -22,11 +22,12 @@ def main(model_type, hyperparameter=None, data_version="version_6", evaluation=F
     """
     # assign parameter save and load path
     parameter_path = f"Model_parameters/{data_version}"
+    print(f'data path: {parameter_path}')
 
     if model_type == "Regressor":
         # preprocess for MLP preceptron
         X_train, y_train, X_del, y_del, X_test, y_test = \
-            pre_processing.merge_split(data_version="version_6", first_loc=first_loc, end_loc=end_loc)
+            pre_processing.merge_split(data_version=data_version, first_loc=first_loc, end_loc=end_loc)
 
         # training MLP preceptron
         regressor = Regressor.regression(X_train, y_train, X_test, y_test,
@@ -43,7 +44,7 @@ def main(model_type, hyperparameter=None, data_version="version_6", evaluation=F
     elif model_type == "Classifier":
         # preprocess for MLP preceptron
         X_train, y_train, X_del, y_del, X_test, y_test = \
-            pre_processing.merge_split(data_version="version_6", first_loc=first_loc, end_loc=end_loc, regressor=False)
+            pre_processing.merge_split(data_version=data_version, first_loc=first_loc, end_loc=end_loc, regressor=False)
 
         # training MLP preceptron
         classifier = Classifier.classifier(X_train, y_train, X_test, y_test, hyperparameter=hyperparameter)
@@ -71,7 +72,7 @@ def optimize(model, deep=3, data_version="version_6", first_loc=1, end_loc=7):
     if model == "Regressor":
         # preprocess for MLP preceptron
         _, _, X_del, y_del, _, _ = \
-            pre_processing.merge_split(data_version="version_6", first_loc=first_loc, end_loc=end_loc)
+            pre_processing.merge_split(data_version=data_version, first_loc=first_loc, end_loc=end_loc)
 
         # setup a MLP preceptron
         regressor = MLPRegressor(solver='lbfgs', random_state=1)
@@ -84,7 +85,7 @@ def optimize(model, deep=3, data_version="version_6", first_loc=1, end_loc=7):
     elif model == "Classifier":
         # preprocess for MLP preceptron
         _, _, X_del, y_del, _, _ = \
-            pre_processing.merge_split(data_version="version_6", first_loc=first_loc, end_loc=end_loc, regressor=False)
+            pre_processing.merge_split(data_version=data_version, first_loc=first_loc, end_loc=end_loc, regressor=False)
 
         # setup a MLP preceptron
         classifier = MLPClassifier(solver='lbfgs', random_state=1)
@@ -100,7 +101,7 @@ if __name__ == '__main__':
     first_loc = 1
     end_loc = 7
     data_version = "version_6"
-    evaluation = True
+    evaluation = False
     opt = False
 
     # define type of Model
@@ -108,14 +109,15 @@ if __name__ == '__main__':
     # model_type = "Classifier"
 
     if not opt:
-        main(model_type, data_version="version_6", evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
+        main(model_type, data_version=data_version, evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
     else:
         # optimize hyper parameter
         deep_space = np.linspace(3, 3, num=1)
         for deep in deep_space:
-            parameter_space = optimize(model_type, deep=int(deep))
+            parameter_space = optimize(model_type, data_version=data_version, deep=int(deep),
+                                       first_loc=first_loc, end_loc=end_loc)
             if deep == 3:
-                main(model_type, parameter_space, data_version="version_6",
+                main(model_type, parameter_space, data_version=data_version,
                      evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
 
     # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"

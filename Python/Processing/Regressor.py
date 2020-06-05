@@ -50,7 +50,7 @@ def regression(X_train, y_train, X_test, y_test, alpha=4.175e-05, hidden_layer_s
 
     # assign saved model path
     model_path = f"Model_parameters/{version}/regressor_layer_{deep}.joblib"
-    print(model_path)
+    print(f'model path: {model_path}')
 
     # check whether a trained model exists
     if os.path.exists(model_path) and hyperparameter is None:

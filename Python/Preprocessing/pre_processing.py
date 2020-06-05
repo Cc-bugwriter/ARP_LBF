@@ -56,14 +56,20 @@ def data_scaling(input_set, version="version_6"):
     """
     # assign scaler path
     scaler_name = "scaler.joblib"
+    directory_path = f"Model_parameters/{version}"
     scaler_path = f"Model_parameters/{version}/{scaler_name}"
 
     # initial StandardScaler
     scaler = StandardScaler()
 
+    # determine path
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
+
     if not os.path.exists(scaler_path):
-        all_data, _ = dr.merge_data(version, first_loc=1, end_loc=3)
+        all_data, _ = dr.merge_data(version, first_loc=1, end_loc=7)
         scaler.fit(all_data)
+
         # save the scaler at first fitting
         joblib.dump(scaler, scaler_path)
         print("save scaler successfully")
@@ -170,7 +176,8 @@ def merge_split(data_version="version_6", first_loc=1, end_loc=7, regressor=True
     """
     # define version list
     version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT',
-                    "version_4": 'P', "version_5": 'P_gerundet', "version_6": 'P'}
+                    "version_4": 'P', "version_5": 'P_gerundet', "version_6": 'P',
+                    "version_7": '_rauschen'}
     # assign data name from version
     data_name = version_list[data_version]
 
