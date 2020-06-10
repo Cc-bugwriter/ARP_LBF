@@ -58,3 +58,6 @@ Normale Änderung wie Projekt-name, Prozess und gewünschtes Datum kann einfach 
 
 ## Usage
 Bitte lesen readme im Unterordner
+
+## Gantt Diagramm
+![gantt diagramm](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Gantt%20Diagramm.png)
