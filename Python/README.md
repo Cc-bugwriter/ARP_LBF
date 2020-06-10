@@ -1,3 +1,8 @@
+Version 2.01
+- reconstruct preprocessing
+- add universal scaler in feature scaling
+- add time-sequential test main function
+----------------------------------------
 Version: 1.03
 - optimize main func
 - add data-version argument in main func
@@ -13,7 +18,7 @@ Version: 1.01
 # MLP Receptron
 MLP Receptron is a Multi-layer artificial intelligence network，which base on python library.
 
-![standard-readme compliant](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/ARP_Programm_Prozess.png)
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/ARP_Programm_Prozess.png)
 
 # Installation
 MLP Receptron depends on a few of popular data science library. 
