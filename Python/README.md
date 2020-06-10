@@ -18,7 +18,7 @@ Version: 1.01
 # MLP Receptron
 MLP Receptron is a Multi-layer artificial intelligence network，which base on python library.
 
-![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/ARP_Programm_Prozess.png)
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Block%20Schaltbild(Reihefolge).png)
 
 # Installation
 MLP Receptron depends on a few of popular data science library. 
@@ -80,7 +80,7 @@ hier is a simple description for each script
 - [Evaluation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Evaluation)
 
 ### Nodes
-all necessary nodes can belong to three blockes:
+all necessary nodes can belong to four blockes:
 - [Preprocessing](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Preprocessing)
 -- [pre_processing.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Preprocessing/pre_processing.py)
 -- [dataset_reader.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Preprocessing/dataset_reader.py)
@@ -98,3 +98,26 @@ all necessary nodes can belong to three blockes:
 
 - [Optimation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Optimation)
 -- [hyper_search.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Optimation/hyper_search.py)
+
+### Flow Chart of Nodes
+Graphically explain nodes and workflow
+----------------------------------------
+#### Preprocessing
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Block%20Schaltbild(Reihefolge)_Preprocessing.png)
+##### Load Data Set
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Preprocessing/Prepro_1_Load%20Data%20set.png)
+##### Data Split
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Preprocessing/Prepro_3_neu_Data%20split.png)
+##### Data Concatenate & Feature Scaling
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Preprocessing/Prepro_4_neu_Feature%20Scaling_neu.png)
+----------------------------------------
+#### Processing and optimization
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Block%20Schaltbild(Reihefolge)_Processing.png)
+##### Hyper Search
+##### Load MLP Preceptron
+##### Regressor Fitting
+##### Save MLP Preceptron
+----------------------------------------
+#### Evaluation
+![integrated flow chart](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Edraw/png/Block%20Schaltbild(Reihefolge)_Evaluation.png)
+
