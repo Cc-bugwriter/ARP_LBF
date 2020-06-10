@@ -56,7 +56,7 @@ If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the r
 - [3. after creating project, click file --> Project: Python --> Project Interpreter]
 - [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok]
 - [5. back to Settings interface --> click  +  button --> Available Packages]
-- [6. manually install the libraries --> speicial version must be check the same with above list ](##Table of Libraries)
+- [6. manually install the libraries --> speicial version must be check the same with above list ](#TableofLibraries)
 
 ## Usage
 please open .py file in Pycharm IDE
@@ -71,32 +71,30 @@ Please make sure to update tests as appropriate.
 hier is a simple description for each script
 ### Function
 [MLP_Preceptron] is already packaged script, which relay on node in each subfiles.
-[MLP_Regression] and [MLP_Classifier] are debug version, which have same sub-funtion like in [MLP_Preceptron].
+[TestRauschData] run just for time-sequential test.
 
-[MLP_Regression] check for :
-- [load data set]
-- [preprocessing]
-- [model Regressor]
-- [evaluation]
-- [hyper Search]
-
-
-[MLP_Classifier] check for :
-- [load data set]
-- [preprocessing]
-- [model Regressor]
-- [evaluation]
-- [hyper Search]
+[MLP_Preceptron] bases on :
+- [Preprocessing](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Preprocessing)
+- [Optimation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Optimation)
+- [Processing](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Processing)
+- [Evaluation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Evaluation)
 
 ### Nodes
 all necessary nodes can belong to three blockes:
-- [Preprocessing]
--- [pre_processing.py]
-- [Regression]
--- [Regressor.py]
-- [Classification]
--- [Classifier.py]
-- [Evaluation]
--- [confusion_matrix.py], [plot_learning_curve.py], [plot_regularization.py]
-- [Optimation]
--- [hyper_search.py]
+- [Preprocessing](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Preprocessing)
+-- [pre_processing.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Preprocessing/pre_processing.py)
+-- [dataset_reader.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Preprocessing/dataset_reader.py)
+
+- [Processing](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Processing)
+-- [Load_model.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Processing/Load_model.py)
+-- [Regressor.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Processing/Regressor.py)
+-- [Classifier.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Processing/Classifier.py)
+-- [Save_model.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Processing/Save_model.py)
+
+- [Evaluation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Evaluation)
+-- [confusion_matrix.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Evaluation/confusion_matrix.py)
+-- [plot_learning_curve.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Evaluation/plot_learning_curve.py)
+-- [plot_regularization.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Evaluation/plot_regularization.py)
+
+- [Optimation](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python/Optimation)
+-- [hyper_search.py](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/Optimation/hyper_search.py)
