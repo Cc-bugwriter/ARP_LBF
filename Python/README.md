@@ -52,11 +52,11 @@ pip install matplotlib
 ### Installing in Pycharm (recommended)
 If you have installed Pycharm IDE in your Laptop, Installing in Pycharm is the recommended installation method
 - [1. clone this repository in your PC](https://github.com/Cc-bugwriter/ARP_LBF.git)
-- [2. open Pycharm and create a project from Python folder, which is located in your cloned path]
-- [3. after creating project, click file --> Project: Python --> Project Interpreter]
-- [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok]
-- [5. back to Settings interface --> click  +  button --> Available Packages]
-- [6. manually install the libraries --> speicial version must be check the same with above list ](#TableofLibraries)
+- [2. open Pycharm and create a project from Python folder, which is located in your cloned path](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/LibrariesGuide/2.1OpenProject.png)
+- [3. after creating project, click file --> Project: Python --> Project Interpreter](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/LibrariesGuide/3.2ProjectInterpreter.png)
+- [4. click the settings button --> Add --> Conda Environment --> Python Version 3.7 -> Ok](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/LibrariesGuide/4.1AddInterpreter.png)
+- [5. back to Settings interface --> click  +  button --> Available Packages](https://github.com/Cc-bugwriter/ARP_LBF/blob/master/Python/LibrariesGuide/5.0AddLibraries.png)
+- [6. manually install the libraries --> speicial version must be check the same with above list ](https://github.com/Cc-bugwriter/ARP_LBF/tree/master/Python)
 
 ## Usage
 please open .py file in Pycharm IDE
