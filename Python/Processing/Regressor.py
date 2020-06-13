@@ -77,12 +77,20 @@ def regression(X_train, y_train, X_test, y_test, alpha=4.175e-05, hidden_layer_s
     name_space = ['m2', 'm3', 'm4', 'k', 'alpha', 'beta']
 
     # compute and Print other Metrics
-    for i in range(y_test.shape[1]):
-        mae = mean_absolute_error(y_test[:, i], y_pred[:, i])
+    # save the metrics in txt data
+    metric_file = os.path.join("Model_parameters", version, "evaluation.txt")
+    print('depth of model: %d' % len(regressor.get_params()["hidden_layer_sizes"]))
 
-        print('%s mean absolute error in Test: %f' % (name_space[i], mae))
-        print('%s normal mean absolute error: %f in percent' % (name_space[i], 100*mae/np.ptp(y_pred[:, i])))
-
-    print("")
+    with open(metric_file, 'a+') as file:
+        file.write("\t".join(['----------------------------']) + "\n")
+        file.write("\t".join(['Test R2 Score: %f' % score]) + "\n")
+        for i in range(y_test.shape[1]):
+            mae = mean_absolute_error(y_test[:, i], y_pred[:, i])
+            print('%s mean absolute error in Test: %f' % (name_space[i], mae))
+            print('%s normal mean absolute error: %f in percent' % (name_space[i], 100 * mae / np.ptp(y_pred[:, i])))
+            file.write("\t".join(['%s mean absolute error in Test: %f' % (name_space[i], mae)]) + "\n")
+            file.write("\t".join(['%s normal mean absolute error: %f in percent' %
+                       (name_space[i], 100 * mae / np.ptp(y_pred[:, i])) + "\n"]) + "\n")
+        print("")
 
     return regressor
