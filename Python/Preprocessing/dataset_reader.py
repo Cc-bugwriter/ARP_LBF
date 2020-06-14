@@ -54,7 +54,7 @@ def merge_data(data_version="version_6", first_loc=1, end_loc=7):
     # define version list
     version_list = {"version_1": 'P', "version_2": 'P1K', "version_3": 'PmitT',
                     "version_4": 'P', "version_5": 'P_gerundet', "version_6": 'P',
-                    "version_7": '_rauschen'}
+                    "version_7": '_rauschen', "version_8": '_rauschen_sigma'}
     # assign data name from version
     data_name = version_list[data_version]
 

@@ -114,11 +114,11 @@ if __name__ == '__main__':
     metric_file = os.path.join("Model_parameters", data_version, "evaluation.txt")
 
     if not opt:
-        main(model_type, data_version=data_version, evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
-
         # record test data
         with open(metric_file, 'w+') as file:
             file.write("\t".join([f"test data from {first_loc}P to {end_loc}P, dataversion: {data_version}"]) + "\n")
+
+        main(model_type, data_version=data_version, evaluation=evaluation, first_loc=first_loc, end_loc=end_loc)
     else:
         # optimize hyper parameter
         deep_space = np.linspace(3, 3, num=1)
@@ -140,6 +140,3 @@ if __name__ == '__main__':
                 file.write("\t".join(str(param) for param in dictlist) + "\n")
 
     # # full path： "Model_parameters/version_4/classifier_layer_1.joblib"
-
-
-

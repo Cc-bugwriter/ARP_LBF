@@ -1,0 +1,21 @@
+test data from sigma 1.0, dataversion: version_8
+----------------------------
+Test R2 Score: -16.708456
+m2 mean absolute error in Test: 0.200938
+m2 normal mean absolute error: 14.018937 in percent
+
+m3 mean absolute error in Test: 0.212862
+m3 normal mean absolute error: 14.169136 in percent
+
+m4 mean absolute error in Test: 0.177392
+m4 normal mean absolute error: 13.788361 in percent
+
+k mean absolute error in Test: 0.312844
+k normal mean absolute error: 13.644655 in percent
+
+alpha mean absolute error in Test: 0.029223
+alpha normal mean absolute error: 9.760363 in percent
+
+beta mean absolute error in Test: 0.031796
+beta normal mean absolute error: 11.480060 in percent
+
