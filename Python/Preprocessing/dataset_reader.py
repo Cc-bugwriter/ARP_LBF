@@ -35,9 +35,6 @@ def dataset_reader(path='Data', data_version='version_6', name='1P', type='csv')
     input_set = df[label_x].values
     target_set = df[label_y].values
 
-    # add dummy feature
-    input_set = add_dummy_feature(input_set)
-
     return input_set, target_set
 
 

@@ -81,13 +81,6 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
         learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
                        train_sizes=train_sizes,
                        return_times=True)
-    # estimator: Model object, e.g. ANN, SVM, etc
-    # X: Training vector
-    # y: Target relative to X
-    # cv: cross-validation splitting strategy.
-    # train_sizes: Relative numbers of training examples that will be used to generate the learning curve
-    # n_jobs: Number of processors to run in parallel. None means 1 processors
-    # return_times: Whether to return the fit and score times.
 
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)

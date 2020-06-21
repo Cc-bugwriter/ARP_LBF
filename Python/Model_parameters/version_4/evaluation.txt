@@ -1,0 +1,21 @@
+test data from 1P to 7P, dataversion: version_4
+----------------------------
+Test R2 Score: 0.997693
+m2 mean absolute error in Test: 0.003873
+m2 normal mean absolute error: 0.892385 in percent
+
+m3 mean absolute error in Test: 0.003599
+m3 normal mean absolute error: 0.817850 in percent
+
+m4 mean absolute error in Test: 0.003632
+m4 normal mean absolute error: 0.834989 in percent
+
+k mean absolute error in Test: 0.004183
+k normal mean absolute error: 0.470410 in percent
+
+alpha mean absolute error in Test: 0.002320
+alpha normal mean absolute error: 0.567597 in percent
+
+beta mean absolute error in Test: 0.002460
+beta normal mean absolute error: 0.580187 in percent
+

@@ -54,7 +54,7 @@ def main(model_type, hyperparameter=None, data_version="version_6", evaluation=F
         # save model and prediction result
         Save_model.save_Preceptron(classifier, X_test, y_test, path=parameter_path)
 
-        # evaluate MLP preceptron
+        # evaluate MLP classifier
         if evaluation:
             confusion_matrix.confusion_matrix(classifier, X_test, y_test, target_name=None)
 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     first_loc = 1
     end_loc = 7
     data_version = "version_6"
-    evaluation = False
+    evaluation = True
     opt = False
 
     # define type of Model
