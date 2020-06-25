@@ -103,7 +103,7 @@ if __name__ == '__main__':
     first_loc = 1
     end_loc = 7
     data_version = "version_6"
-    evaluation = True
+    evaluation = False
     opt = False
 
     # define type of Model
